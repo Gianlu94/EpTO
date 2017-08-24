@@ -10,14 +10,16 @@ import java.io.Serializable;
  */
 public class Messages {
 
-	//informs a node about PSS and schedule time event
+	//informs a node about PSS, schedule time event and churn
 	public static class StartingNode implements Serializable{
 		ActorRef pss;
 		int st;
+		int churn;
 
-		public StartingNode (ActorRef pss, int st){
+		public StartingNode (ActorRef pss, int st, int churn){
 			this.pss = pss;
 			this.st = st;
+			this.churn = churn;
 		}
 	}
 }
