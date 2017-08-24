@@ -14,9 +14,9 @@ public class Messages {
 	public static class StartingNode implements Serializable{
 		ActorRef pss;
 		int st;
-		int churn;
+		double churn;
 
-		public StartingNode (ActorRef pss, int st, int churn){
+		public StartingNode (ActorRef pss, int st, double churn){
 			this.pss = pss;
 			this.st = st;
 			this.churn = churn;
