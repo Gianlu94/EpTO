@@ -10,6 +10,15 @@ import java.io.Serializable;
  */
 public class Messages {
 
+	//informs pss about size of nodes view
+	public static class StartingPss implements  Serializable{
+		int sv;
+		public StartingPss (int sv){
+			this.sv = sv;
+		}
+	}
+
+
 	//informs a node about PSS, schedule time event and churn
 	public static class StartingNode implements Serializable{
 		ActorRef pss;

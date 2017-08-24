@@ -7,7 +7,14 @@ import akka.actor.UntypedActor;
 
 public class PSS extends UntypedActor {
 
-	public void onReceive (Object Message) throws Exception{
+	private int sizeOfNodeView;
 
+	public void onReceive (Object message) throws Exception{
+
+		if (message instanceof Messages.StartingPss){
+			Messages.StartingPss msg = (Messages.StartingPss) message;
+
+			sizeOfNodeView = msg.sv;
+		}
 	}
 }
