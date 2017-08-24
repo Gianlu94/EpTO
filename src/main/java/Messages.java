@@ -33,4 +33,16 @@ public class Messages {
 			this.churn = churn;
 		}
 	}
+
+	//request id to pss from node
+	public static class IdRequest implements Serializable{};
+
+	//response id to node from pss
+	public static class IdResponse implements  Serializable{
+		int id;
+
+		public IdResponse (int id){
+			this.id = id;
+		}
+	};
 }
