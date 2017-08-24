@@ -1,1 +1,1 @@
-Distributed systems 2 porject -- EpTO
+Distributed systems 2 project -- EpTO
