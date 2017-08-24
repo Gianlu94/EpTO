@@ -23,11 +23,13 @@ public class Messages {
 	public static class StartingNode implements Serializable{
 		ActorRef pss;
 		int st;
+		int k;
 		double churn;
 
-		public StartingNode (ActorRef pss, int st, double churn){
+		public StartingNode (ActorRef pss, int st, int k, double churn){
 			this.pss = pss;
 			this.st = st;
+			this.k = k;
 			this.churn = churn;
 		}
 	}

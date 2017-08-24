@@ -1,3 +1,4 @@
+import akka.actor.ActorRef;
 import akka.actor.UntypedActor;
 
 /**
@@ -6,7 +7,20 @@ import akka.actor.UntypedActor;
  */
 public class Node extends UntypedActor {
 
-	public void onReceive(Object Message) throws  Exception{
+	private ActorRef pss;
+	private int myId;
+	private int st;
+	private int k;
+	private double churn;
 
+	public void onReceive(Object message) throws  Exception{
+
+		if (message instanceof  Messages.StartingNode){
+			Messages.StartingNode msg = (Messages.StartingNode)message;
+			pss = msg.pss;
+			st = msg.st;
+			k = msg.k;
+			churn = msg.churn;
+		}
 	}
 }
