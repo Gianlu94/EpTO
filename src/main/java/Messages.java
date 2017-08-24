@@ -1,3 +1,5 @@
+import akka.actor.ActorRef;
+
 import java.io.Serializable;
 
 /**
@@ -8,5 +10,14 @@ import java.io.Serializable;
  */
 public class Messages {
 
+	//informs a node about PSS and schedule time event
+	public static class StartingNode implements Serializable{
+		ActorRef pss;
+		int st;
 
+		public StartingNode (ActorRef pss, int st){
+			this.pss = pss;
+			this.st = st;
+		}
+	}
 }
