@@ -21,6 +21,13 @@ public class Node extends UntypedActor {
 			st = msg.st;
 			k = msg.k;
 			churn = msg.churn;
+
+			//ask Pss its id
+			pss.tell(new Messages.IdRequest(), getSelf());
+		}
+		else if (message instanceof Messages.IdResponse){
+			myId = ((Messages.IdResponse) message).id;
+			System.out.println("******** MY ID is "+myId);
 		}
 	}
 }

@@ -41,11 +41,12 @@ public class Application {
 
 		//create PSS process
 		ActorRef pss = system.actorOf(Props.create(PSS.class), "PSS");
+		pss.tell(new Messages.StartingPss(SV), null);
 
 		//create initial nodes
 		for (int i = 0; i < N; i++){
 			ActorRef node = system.actorOf(Props.create(Node.class), "Node" + i);
-			node.tell(new Messages.StartingNode(pss,ST), null);
+			node.tell(new Messages.StartingNode(pss,ST,K,C), null);
 		}
 
 	}
