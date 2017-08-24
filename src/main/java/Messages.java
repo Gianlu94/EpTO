@@ -1,6 +1,7 @@
 import akka.actor.ActorRef;
 
 import java.io.Serializable;
+import java.util.HashMap;
 
 /**
  * Created by gianluke on 24/08/17.
@@ -44,5 +45,24 @@ public class Messages {
 		public IdResponse (int id){
 			this.id = id;
 		}
-	};
+	}
+
+	//request view to pss from node
+	public static class RequestView implements Serializable{
+		int sender;
+
+		public RequestView (int sender){
+			this.sender = sender;
+		}
+	}
+
+	//response view to node from pss
+	public static class ResponseView implements  Serializable{
+		HashMap<Integer, ActorRef> view;
+
+		public ResponseView (HashMap<Integer, ActorRef> view){
+			this.view = view;
+		}
+	}
+
 }
