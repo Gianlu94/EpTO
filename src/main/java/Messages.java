@@ -87,7 +87,7 @@ public class Messages {
 		}
 	}
 
-	//
+	//message sent to Node in order to create a new event
 	public static class CreateEvent implements Serializable{}
 
 
