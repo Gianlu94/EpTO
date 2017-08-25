@@ -87,6 +87,9 @@ public class Messages {
 		}
 	}
 
+	//
+	public static class CreateEvent implements Serializable{}
+
 
 
 }
