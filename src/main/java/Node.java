@@ -39,5 +39,8 @@ public class Node extends UntypedActor {
 
 			//System.out.println("***** "+ myView.toString());
 		}
+		else if (message instanceof Messages.EventsRateCommunication){
+			System.out.println ("Node "+ myId + " received spawn order");
+		}
 	}
 }

@@ -48,7 +48,8 @@ public class PSS extends UntypedActor {
 			}
 		}
 		else if (message instanceof Messages.StartingSpawnEvents){
-
+			Messages.StartingSpawnEvents msg = (Messages.StartingSpawnEvents)message;
+			spawnEvents(msg.eventsRate, msg.duration);
 		}
 
 	}
@@ -69,6 +70,12 @@ public class PSS extends UntypedActor {
 		return sendingView;
 
 
+	}
+
+	private void spawnEvents (int eventsRate, int duration){
+		for (int key: nodes.keySet()){
+			nodes.get(key).tell(new Messages.EventsRateCommunication(eventsRate,duration), null);
+		}
 	}
 
 }

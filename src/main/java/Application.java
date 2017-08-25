@@ -78,9 +78,6 @@ public class Application {
 					int duration = Integer.parseInt(input.nextLine());
 					pss.tell(new Messages.StartingSpawnEvents(eventsRate,duration), null);
 					break;
-				case "":
-					System.out.println("***");
-					break;
 				default:
 					break;
 			}

@@ -76,5 +76,17 @@ public class Messages {
 		}
 	}
 
+	//message sent to node to communicate the rate for the events creation
+	public static class EventsRateCommunication implements Serializable{
+		int eventsRate;
+		int duration;
+
+		public EventsRateCommunication (int eventsRate, int duration){
+			this.eventsRate = eventsRate;
+			this.duration = duration;
+		}
+	}
+
+
 
 }
