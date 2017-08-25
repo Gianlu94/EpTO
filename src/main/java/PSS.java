@@ -1,9 +1,11 @@
 import akka.actor.ActorRef;
 import akka.actor.UntypedActor;
+import scala.concurrent.duration.Duration;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by gianluke on 24/08/17.
@@ -37,6 +39,12 @@ public class PSS extends UntypedActor {
 				//System.out.println("*******ID sendert")
 				//System.out.println("***** "+ myView.toString());
 				getSender().tell(new Messages.ResponseView(sendingview), null);
+			}
+			else{
+				getContext().system().scheduler().scheduleOnce(
+						Duration.create(1, TimeUnit.SECONDS), getSelf(),
+						message, getContext().system().dispatcher(), getSender()
+						);
 			}
 		}
 
