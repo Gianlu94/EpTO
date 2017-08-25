@@ -37,7 +37,7 @@ public class Node extends UntypedActor {
 		else if (message instanceof  Messages.ResponseView){
 			myView = ((Messages.ResponseView)message).view;
 
-			System.out.println("***** "+ myView.toString());
+			//System.out.println("***** "+ myView.toString());
 		}
 	}
 }

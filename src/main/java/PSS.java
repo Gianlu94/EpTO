@@ -47,6 +47,9 @@ public class PSS extends UntypedActor {
 						);
 			}
 		}
+		else if (message instanceof Messages.StartingSpawnEvents){
+
+		}
 
 	}
 
