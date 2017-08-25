@@ -15,9 +15,6 @@ import scala.Int;
  */
 public class Application {
 
-	static int N, SV, K, TTL, RD, ST; //paramters: nodes, view size, fanout, nb rounds delayed, round duration, schedule
-	//time event
-	static double C, D; //parameters: churn, drift
 	static ActorRef pss;
 
 	public static void main (String [] args){
@@ -28,14 +25,14 @@ public class Application {
 
 
 		try{
-			N = parameters.getInt("N.value");
-			SV = parameters.getInt("SV.value");
-			K = parameters.getInt("K.value");
-			TTL = parameters.getInt("TTL.value");
-			RD = parameters.getInt("RD.value");
-			ST = parameters.getInt("ST.value");
-			C = parameters.getDouble("C.value");
-			D = parameters.getDouble("D.value");
+			Global.N = parameters.getInt("N.value");
+			Global.SV = parameters.getInt("SV.value");
+			Global.K = parameters.getInt("K.value");
+			Global.TTL = parameters.getInt("TTL.value");
+			Global.RD = parameters.getInt("RD.value");
+			Global.ST = parameters.getInt("ST.value");
+			Global.C = parameters.getDouble("C.value");
+			Global.D = parameters.getDouble("D.value");
 		}catch (Exception e){
 			System.err.println("ERROR: Loading parameters failed");
 		}
@@ -44,12 +41,12 @@ public class Application {
 
 		//create PSS process
 		pss = system.actorOf(Props.create(PSS.class), "PSS");
-		pss.tell(new Messages.StartingPss(SV), null);
+		pss.tell(new Messages.StartingPss(Global.SV), null);
 
 		//create initial nodes
-		for (int i = 0; i < N; i++){
+		for (int i = 0; i < Global.N; i++){
 			ActorRef node = system.actorOf(Props.create(Node.class), "Node" + i);
-			node.tell(new Messages.StartingNode(pss,ST,K,C), null);
+			node.tell(new Messages.StartingNode(pss, Global.ST,Global.K,Global.C), null);
 		}
 
 		terminal();
