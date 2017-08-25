@@ -65,4 +65,16 @@ public class Messages {
 		}
 	}
 
+	//message sent to pss in order to start the spawn of new events
+	public static class StartingSpawnEvents implements Serializable{
+		int eventsRate;
+		int duration;
+
+		public StartingSpawnEvents (int eventsRate, int duration){
+			this.eventsRate = eventsRate;
+			this.duration = duration;
+		}
+	}
+
+
 }
