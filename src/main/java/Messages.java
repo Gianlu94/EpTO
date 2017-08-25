@@ -11,24 +11,17 @@ import java.util.HashMap;
  */
 public class Messages {
 
-	//informs pss about size of nodes view
-	public static class StartingPss implements  Serializable{
-		int sv;
-		public StartingPss (int sv){
-			this.sv = sv;
-		}
-	}
+	//start pss process
+	public static class StartingPss implements  Serializable{}
 
 
 	//informs a node about PSS, schedule time event and churn
 	public static class StartingNode implements Serializable{
-		ActorRef pss;
 		int st;
 		int k;
 		double churn;
 
-		public StartingNode (ActorRef pss, int st, int k, double churn){
-			this.pss = pss;
+		public StartingNode (int st, int k, double churn){
 			this.st = st;
 			this.k = k;
 			this.churn = churn;

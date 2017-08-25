@@ -1,3 +1,5 @@
+import akka.actor.ActorRef;
+
 /**
  * Created by gianluke on 25/08/17.
  */
@@ -12,4 +14,6 @@ public class Global {
 
 	public static double C;         //churn
 	public static double D;         //drift
+
+	public static ActorRef pss;     //pss
 }

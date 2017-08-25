@@ -14,16 +14,14 @@ import java.util.concurrent.TimeUnit;
 
 public class PSS extends UntypedActor {
 
-	private int sizeOfNodeView;
+
 	private int ids = 0;
 	private HashMap<Integer,ActorRef> nodes;
 
 	public void onReceive (Object message) throws Exception{
 
 		if (message instanceof Messages.StartingPss){
-			Messages.StartingPss msg = (Messages.StartingPss) message;
 
-			sizeOfNodeView = msg.sv;
 			nodes = new HashMap<Integer, ActorRef>();
 		}
 		else if (message instanceof  Messages.IdRequest){
@@ -33,7 +31,7 @@ public class PSS extends UntypedActor {
 
 		}
 		else if (message instanceof Messages.RequestView) {
-			if ((nodes.size() - 1) >= sizeOfNodeView){
+			if ((nodes.size() - 1) >= Global.SV){
 				Messages.RequestView msg = (Messages.RequestView) message;
 				HashMap<Integer,ActorRef> sendingview = createView(msg.sender);
 				//System.out.println("*******ID sendert")
@@ -62,7 +60,7 @@ public class PSS extends UntypedActor {
 		Collections.shuffle(remainingNodeKeys);
 
 		HashMap<Integer,ActorRef> sendingView = new HashMap<Integer, ActorRef>();
-		for (int i = 0; i < sizeOfNodeView; i++){
+		for (int i = 0; i < Global.SV; i++){
 			int key = remainingNodeKeys.get(i);
 			sendingView.put(key, tmpNodes.get(key));
 		}

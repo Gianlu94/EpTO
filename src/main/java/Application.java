@@ -15,8 +15,6 @@ import scala.Int;
  */
 public class Application {
 
-	static ActorRef pss;
-
 	public static void main (String [] args){
 
 		//Load paramenters from Parameters configuration file
@@ -40,13 +38,13 @@ public class Application {
 		final ActorSystem system = ActorSystem.create("mysystem");
 
 		//create PSS process
-		pss = system.actorOf(Props.create(PSS.class), "PSS");
-		pss.tell(new Messages.StartingPss(Global.SV), null);
+		Global.pss = system.actorOf(Props.create(PSS.class), "PSS");
+		Global.pss.tell(new Messages.StartingPss(), null);
 
 		//create initial nodes
 		for (int i = 0; i < Global.N; i++){
 			ActorRef node = system.actorOf(Props.create(Node.class), "Node" + i);
-			node.tell(new Messages.StartingNode(pss, Global.ST,Global.K,Global.C), null);
+			node.tell(new Messages.StartingNode(Global.ST,Global.K,Global.C), null);
 		}
 
 		terminal();
@@ -73,7 +71,7 @@ public class Application {
 					int eventsRate= Integer.parseInt(input.nextLine());
 					System.out.print(" Option 1 ---- Insert duration of the spawn: ");
 					int duration = Integer.parseInt(input.nextLine());
-					pss.tell(new Messages.StartingSpawnEvents(eventsRate,duration), null);
+					Global.pss.tell(new Messages.StartingSpawnEvents(eventsRate,duration), null);
 					break;
 				default:
 					break;
