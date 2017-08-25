@@ -2,7 +2,7 @@
  * Created by gianluke on 25/08/17.
  */
 public class Event {
-	private int ts;
+	private long ts;
 	private int ttl;
 	private int sourceId;
 
@@ -16,11 +16,11 @@ public class Event {
 		setSourceId(sourceId);
 	}
 
-	public int getTs() {
+	public long getTs() {
 		return ts;
 	}
 
-	public void setTs(int ts) {
+	public void setTs(long ts) {
 		this.ts = ts;
 	}
 
