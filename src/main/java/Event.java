@@ -2,6 +2,7 @@
  * Created by gianluke on 25/08/17.
  */
 public class Event {
+	private String id;
 	private long ts;
 	private int ttl;
 	private int sourceId;
@@ -14,6 +15,14 @@ public class Event {
 		setTs(ts);
 		setTtl(ttl);
 		setSourceId(sourceId);
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public long getTs() {
@@ -39,4 +48,5 @@ public class Event {
 	public void setSourceId(int sourceId) {
 		this.sourceId = sourceId;
 	}
+
 }
