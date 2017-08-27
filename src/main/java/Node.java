@@ -41,7 +41,7 @@ public class Node extends UntypedActor {
 		}
 		else if (message instanceof  Messages.ResponseView){
 			myView = ((Messages.ResponseView)message).view;
-
+			startingRounds();
 			//System.out.println("***** "+ myView.toString());
 		}
 		else if (message instanceof Messages.EventsRateCommunication){
@@ -57,9 +57,49 @@ public class Node extends UntypedActor {
 			event.setTs(GlobalClock.getClock());
 			event.setTtl(0);
 			event.setSourceId(myId);
-			System.out.println("Node "+ myId+ " message" + event.getId());
-
+			//System.out.println("Node "+ myId+ " message" + event.getId());
+			if (nextBall == null) { //TODO: why?
+				nextBall = new HashMap<String, Event>();
+			}
 			nextBall.put(event.getId(), event);
+			//System.out.println("Node "+ myId+ " nextballsize " + nextBall.size());
+			//nextBall.put(event.getId(), event);
+
+
+
+		}
+		else if (message instanceof Messages.Round) {
+			//1st part
+
+			//Todo: check if  the next ball is empty (otherwise exception)
+			if (nextBall != null) {
+				//increment Ttl
+				for (String keyEvent : nextBall.keySet()) {
+					Event event = nextBall.get(keyEvent);
+					event.setTtl(event.getTtl() + 1);
+				}
+
+				//ask pss k random nodes
+				Global.pss.tell(new Messages.RandomViewNodes(myView, Global.K), getSelf());
+			}
+		}
+		else if (message instanceof Messages.ResponseRandomNodes){
+			//2nd part
+
+			Messages.ResponseRandomNodes msg = (Messages.ResponseRandomNodes) message;
+
+			HashMap<Integer,ActorRef> peers = new HashMap<Integer, ActorRef>(msg.selectedNodes);
+
+			System.out.println("Node "+myId + ":  k = "+ Global.K+ " peersSize = "+ peers.size());
+			if (nextBall.size() != 0){
+				for (int q : peers.keySet()){
+					peers.get(q).tell(new Messages.Ball(nextBall),null);
+				}
+			}
+
+
+			//ORDEREVENTS(nextBall);
+			nextBall = null;
 		}
 	}
 
@@ -72,4 +112,13 @@ public class Node extends UntypedActor {
 			);
 		}
 	}
+
+	private void startingRounds() {
+		getContext().system().scheduler().schedule(
+				Duration.create(0, TimeUnit.SECONDS), Duration.create(Global.RD, TimeUnit.SECONDS), getSelf(),
+				new Messages.Round(), getContext().system().dispatcher(), null
+		);
+	}
+
+
 }
