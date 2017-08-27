@@ -84,6 +84,7 @@ public class Messages {
 	//message sent to Node in order to create a new event
 	public static class CreateEvent implements Serializable{}
 
+
 	//message used to send a Ball of msgs to another node
 	public  static class Ball implements Serializable{
 		HashMap<String, Event> nextball;
@@ -113,4 +114,7 @@ public class Messages {
 			this.selectedNodes = selectedNodes;
 		}
 	}
+
+	//message to simulate each round
+	public static class Round implements Serializable{};
 }
