@@ -93,12 +93,12 @@ public class Messages {
 	}
 
 	//message sent by a node to Pss in order to get k random nodes from its view
-	public  static class  RandowViewNodes implements  Serializable{
+	public  static class  RandomViewNodes implements  Serializable{
 		HashMap<Integer, ActorRef> view;
 		int k;
 
 		//TODO: use k from global?
-		public RandowViewNodes(HashMap<Integer,ActorRef> view, int k){
+		public RandomViewNodes(HashMap<Integer,ActorRef> view, int k){
 			this.view = view;
 			this.k = k;
 		}
