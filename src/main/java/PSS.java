@@ -1,5 +1,6 @@
 import akka.actor.ActorRef;
 import akka.actor.UntypedActor;
+import akka.io.Tcp;
 import scala.concurrent.duration.Duration;
 
 import java.util.ArrayList;
@@ -49,21 +50,40 @@ public class PSS extends UntypedActor {
 			Messages.StartingSpawnEvents msg = (Messages.StartingSpawnEvents)message;
 			spawnEvents(msg.eventsRate, msg.duration);
 		}
+		else if (message instanceof Messages.RandomViewNodes){
+			Messages.RandomViewNodes msg = (Messages.RandomViewNodes)message;
+			HashMap<Integer,ActorRef> randomNodes = new HashMap<Integer, ActorRef>();
 
+			//select k nodes
+			randomNodes = getRandomNodes(msg.view, msg.k);
+
+			//response back to node
+			getSender().tell(new Messages.ResponseRandomNodes(randomNodes), null);
+		}
+
+	}
+
+	//This method is responsible to select k node from a given node map
+	//TODO: to implement checks on parameters (k <= nodeView)
+	private HashMap<Integer, ActorRef> getRandomNodes(HashMap<Integer,ActorRef> nodeView, int k){
+		ArrayList<Integer> keyNodes = new ArrayList<Integer>(nodeView.keySet());
+		Collections.shuffle(keyNodes);
+
+		HashMap<Integer,ActorRef> selectedRandomNodes = new HashMap<Integer, ActorRef>();
+		for (int i = 0; i < k; i++){
+			int key = keyNodes.get(i);
+			selectedRandomNodes.put(key, nodeView.get(key));
+		}
+
+		return selectedRandomNodes;
 	}
 
 	private HashMap<Integer, ActorRef> createView (int sender){
 		HashMap<Integer,ActorRef> tmpNodes = new HashMap<Integer, ActorRef>(nodes);
 		tmpNodes.remove(sender);
 
-		ArrayList<Integer>remainingNodeKeys = new ArrayList<Integer>(tmpNodes.keySet());
-		Collections.shuffle(remainingNodeKeys);
-
 		HashMap<Integer,ActorRef> sendingView = new HashMap<Integer, ActorRef>();
-		for (int i = 0; i < Global.SV; i++){
-			int key = remainingNodeKeys.get(i);
-			sendingView.put(key, tmpNodes.get(key));
-		}
+		sendingView = getRandomNodes(tmpNodes, Global.SV);
 
 		return sendingView;
 
