@@ -1,4 +1,5 @@
 import akka.actor.ActorRef;
+import scala.Int;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -101,6 +102,15 @@ public class Messages {
 		public RandomViewNodes(HashMap<Integer,ActorRef> view, int k){
 			this.view = view;
 			this.k = k;
+		}
+	}
+
+	//message sent by pss to node to give it the k random nodes
+	public  static class ResponseRandomNodes implements Serializable{
+		HashMap<Integer, ActorRef> selectedNodes;
+
+		public ResponseRandomNodes (HashMap<Integer,ActorRef> selectedNodes){
+			this.selectedNodes = selectedNodes;
 		}
 	}
 }
