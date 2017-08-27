@@ -83,6 +83,13 @@ public class Messages {
 	//message sent to Node in order to create a new event
 	public static class CreateEvent implements Serializable{}
 
+	//message used to send a Ball of msgs to another node
+	public  static class Ball implements Serializable{
+		HashMap<String, Event> nextball;
 
+		public Ball (HashMap<String, Event> nextBall){
+			this.nextball = nextBall;
+		}
+	}
 
 }
