@@ -1,7 +1,7 @@
+/target
 \.idea/**
 *.iml
 *.xml
-/target
 
 # Java class files
 *.class

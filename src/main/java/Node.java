@@ -71,27 +71,21 @@ public class Node extends UntypedActor {
 		else if (message instanceof Messages.Round) {
 			//1st part
 
-			//Todo: check if  the next ball is empty (otherwise exception)
-			if (nextBall != null) {
-				//increment Ttl
-				for (String keyEvent : nextBall.keySet()) {
-					Event event = nextBall.get(keyEvent);
-					event.setTtl(event.getTtl() + 1);
-				}
 
-				//ask pss k random nodes
-				Global.pss.tell(new Messages.RandomViewNodes(myView, Global.K), getSelf());
+			//increment Ttl
+			for (String keyEvent : nextBall.keySet()) {
+				Event event = nextBall.get(keyEvent);
+				event.setTtl(event.getTtl() + 1);
 			}
-		}
-		else if (message instanceof Messages.ResponseRandomNodes){
-			//2nd part
 
-			Messages.ResponseRandomNodes msg = (Messages.ResponseRandomNodes) message;
 
-			HashMap<Integer,ActorRef> peers = new HashMap<Integer, ActorRef>(msg.selectedNodes);
 
-			System.out.println("Node "+myId + ":  k = "+ Global.K+ " peersSize = "+ peers.size());
+
 			if (nextBall.size() != 0){
+				//get k nodes from my view
+				HashMap<Integer,ActorRef> peers;
+				peers = Utils.getRandomNodes(myView,Global.K);
+				System.out.println("Node "+myId + ":  k = "+ Global.K+ " peersSize = "+ peers.size());
 				for (int q : peers.keySet()){
 					peers.get(q).tell(new Messages.Ball(nextBall),null);
 				}
@@ -99,8 +93,9 @@ public class Node extends UntypedActor {
 
 
 			//ORDEREVENTS(nextBall);
-			nextBall = null;
+			nextBall.clear();
 		}
+
 	}
 
 	private void scheduleEvents (int eventsRate, int duration){
