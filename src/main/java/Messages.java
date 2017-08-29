@@ -92,7 +92,7 @@ public class Messages {
 		HashMap<String, Event> nextball;
 
 		public Ball (HashMap<String, Event> nextBall){
-			this.nextball = new HashMap<String,Event>(nextBall);
+			this.nextball= new HashMap<String, Event>(nextBall);
 		}
 	}
 
