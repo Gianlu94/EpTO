@@ -49,4 +49,8 @@ public class Event {
 		this.sourceId = sourceId;
 	}
 
+	@Override
+	public boolean equals (Object o){
+		return this.getId() == ((Event)o).getId();
+	}
 }
