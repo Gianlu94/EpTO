@@ -57,13 +57,9 @@ public class Node extends UntypedActor {
 			event.setTs(GlobalClock.getClock());
 			event.setTtl(0);
 			event.setSourceId(myId);
-			//System.out.println("Node "+ myId+ " message" + event.getId());
-			if (nextBall == null) { //TODO: why?
-				nextBall = new HashMap<String, Event>();
-			}
+
 			nextBall.put(event.getId(), event);
-			//System.out.println("Node "+ myId+ " nextballsize " + nextBall.size());
-			//nextBall.put(event.getId(), event);
+
 
 
 
@@ -71,14 +67,11 @@ public class Node extends UntypedActor {
 		else if (message instanceof Messages.Round) {
 			//1st part
 
-
 			//increment Ttl
 			for (String keyEvent : nextBall.keySet()) {
 				Event event = nextBall.get(keyEvent);
 				event.setTtl(event.getTtl() + 1);
 			}
-
-
 
 
 			if (nextBall.size() != 0){
