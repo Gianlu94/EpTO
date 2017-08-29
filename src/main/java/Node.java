@@ -118,7 +118,7 @@ public class Node extends UntypedActor {
 		for (int i = 0; i < eventsRate * duration; i++){
 			double random = ThreadLocalRandom.current().nextDouble(0, duration);
 			getContext().system().scheduler().scheduleOnce(
-					Duration.create((long)(random*1000000), TimeUnit.NANOSECONDS), getSelf(),
+					Duration.create((long)(random*1000000000), TimeUnit.NANOSECONDS), getSelf(),
 					new Messages.CreateEvent(), getContext().system().dispatcher(), null
 			);
 		}
