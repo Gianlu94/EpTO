@@ -16,11 +16,12 @@ public class Utils {
 		Collections.shuffle(keyNodes);
 
 		HashMap<Integer,ActorRef> selectedRandomNodes = new HashMap<Integer, ActorRef>();
-		for (int i = 0; i < k; i++){
-			int key = keyNodes.get(i);
-			selectedRandomNodes.put(key, nodeView.get(key));
+		if (keyNodes.size() >= k) {
+			for (int i = 0; i < k; i++) {
+				int key = keyNodes.get(i);
+				selectedRandomNodes.put(key, nodeView.get(key));
+			}
 		}
-
 		return selectedRandomNodes;
 	}
 }
