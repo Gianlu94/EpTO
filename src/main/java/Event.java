@@ -1,7 +1,7 @@
 /**
  * Created by gianluke on 25/08/17.
  */
-public class Event {
+public class Event  implements Comparable<Event>{
 	private String id;
 	private long ts;
 	private int ttl;
@@ -52,5 +52,22 @@ public class Event {
 	@Override
 	public boolean equals (Object o){
 		return this.getId() == ((Event)o).getId();
+	}
+
+
+	@Override
+	public int compareTo(Event o) {
+
+		if (this.getTs() < o.getTs()){
+			return -1;
+		}
+		else if (this.getTs() > o.getTs()){
+			return 1;
+		}
+		else if (this.getTs() == o.getTs()){
+			return  this.getSourceId()- o.getSourceId();
+		}
+
+		return 0;
 	}
 }
