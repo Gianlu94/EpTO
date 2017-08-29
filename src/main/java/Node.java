@@ -88,6 +88,29 @@ public class Node extends UntypedActor {
 			//ORDEREVENTS(nextBall);
 			nextBall.clear();
 		}
+		else if (message instanceof Messages.Ball){
+			HashMap<String, Event> ball = ((Messages.Ball) message).nextball;
+
+			for (String key : ball.keySet()){
+				Event event = ball.get(key);
+
+				if (event.getTtl() < Global.TTL){
+					if (nextBall.containsKey(event.getId())) {
+						if (nextBall.get(event.getId()).getTtl() < event.getTtl()) {
+							System.out.println("EVENT BALL KEY = " + event.getId() + "-- EVENT NEXT BALL KEY "+nextBall.get(event.getId()));
+							nextBall.get(event.getId()).setTtl(event.getTtl());
+						}
+					}
+					else{
+						nextBall.put(event.getId(), event);
+					}
+				}
+
+				//UPDATECLOCK
+
+			}
+
+		}
 
 	}
 

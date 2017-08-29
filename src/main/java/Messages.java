@@ -2,6 +2,8 @@ import akka.actor.ActorRef;
 import scala.Int;
 
 import java.io.Serializable;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 
 /**
@@ -90,7 +92,7 @@ public class Messages {
 		HashMap<String, Event> nextball;
 
 		public Ball (HashMap<String, Event> nextBall){
-			this.nextball = nextBall;
+			this.nextball = new HashMap<String,Event>(nextBall);
 		}
 	}
 
