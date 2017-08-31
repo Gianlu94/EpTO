@@ -1,5 +1,6 @@
 import akka.actor.ActorRef;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -24,5 +25,29 @@ public class Utils {
 		}
 
 		return selectedRandomNodes;
+	}
+
+	public static void createFile (String pathToFile){
+		File f = new File(pathToFile);
+		f.getParentFile().mkdirs();
+		try {
+			f.createNewFile();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	//Wrapper to write into a file
+	public static void writeOnAFile (String file, String content){
+		try{
+			FileWriter fw = new FileWriter("file", true);
+			BufferedWriter bw = new BufferedWriter(fw);
+			PrintWriter out = new PrintWriter(bw);
+
+			out.println(content);
+		}
+		catch (IOException e){
+			System.err.println("ERROR : An error occured while writing into file " + file);
+		}
 	}
 }
