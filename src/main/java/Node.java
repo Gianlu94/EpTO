@@ -19,10 +19,13 @@ public class Node extends UntypedActor {
 	private double churn;
 	private int idMessages; //counter used to assign id to messages
 	private long lastDeliveredTs = 0;
+
+	private String pathLog;
+
 	private HashMap<Integer, ActorRef> myView = new HashMap<Integer, ActorRef>();
 	private HashMap<String, Event> nextBall = new HashMap<String, Event>();
 	private HashMap<String, Event> received = new HashMap<String, Event>();
-	private HashSet<Event> delivered = new HashSet<Event>();
+	private ArrayList<Event> delivered = new ArrayList<Event>();
 
 
 	public void onReceive(Object message) throws  Exception{
@@ -51,6 +54,9 @@ public class Node extends UntypedActor {
 		else if (message instanceof Messages.EventsRateCommunication){
 			Messages.EventsRateCommunication msg = (Messages.EventsRateCommunication)message;
 			//System.out.println ("Node "+ myId + " received spawn order");
+			pathLog = Global.pathNode + myId+ "/Log.txt";
+			Utils.createFile(pathLog);
+
 			scheduleEvents(msg.eventsRate, msg.duration);
 
 		}
@@ -130,7 +136,7 @@ public class Node extends UntypedActor {
 
 	private void startingRounds() {
 		getContext().system().scheduler().schedule(
-				Duration.create(0, TimeUnit.SECONDS), Duration.create(Global.RD, TimeUnit.SECONDS), getSelf(),
+				Duration.create(0, TimeUnit.SECONDS), Duration.create(Global.RD, TimeUnit.MICROSECONDS), getSelf(),
 				new Messages.Round(), getContext().system().dispatcher(), null
 		);
 	}
@@ -210,7 +216,8 @@ public class Node extends UntypedActor {
 	}
 
 	private void deliver (Event event){
-		System.out.println("Node "+ myId + " delivers event  " + event.getId());
+		Utils.writeOnAFile(pathLog,event.getId());
+		//System.out.println("Node "+ myId + "delivered " + event.getId() );
 	}
 
 

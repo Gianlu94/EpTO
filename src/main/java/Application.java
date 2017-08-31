@@ -1,5 +1,8 @@
 import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Scanner;
+import java.util.Vector;
 
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
@@ -36,7 +39,6 @@ public class Application {
 		}
 
 		final ActorSystem system = ActorSystem.create("mysystem");
-
 		//create PSS process
 		Global.pss = system.actorOf(Props.create(PSS.class), "PSS");
 		Global.pss.tell(new Messages.StartingPss(), null);
@@ -72,7 +74,22 @@ public class Application {
 					System.out.print(" Option 1 ---- Insert duration of the spawn: ");
 					int duration = Integer.parseInt(input.nextLine());
 					Global.pss.tell(new Messages.StartingSpawnEvents(eventsRate,duration), null);
+					try {
+						for (int i = 0; i < (duration + 1); i++ ){
+							System.out.print(". ");
+							Thread.sleep(1000);
+						}
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
 					break;
+					/*if(Global.deliveredEvents.size() != 0){
+						for (Event event : Global.deliveredEvents){
+
+						}
+					}
+					*/
+					//Global.deliveredEvents.clear();
 				default:
 					break;
 			}
