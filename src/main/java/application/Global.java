@@ -1,3 +1,5 @@
+package application;
+
 import akka.actor.ActorRef;
 
 import java.util.Vector;

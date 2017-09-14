@@ -1,3 +1,5 @@
+package application;
+
 import akka.actor.ActorRef;
 import akka.actor.UntypedActor;
 import scala.concurrent.duration.Duration;

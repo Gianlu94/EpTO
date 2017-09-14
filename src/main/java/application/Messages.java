@@ -1,9 +1,8 @@
+package application;
+
 import akka.actor.ActorRef;
-import scala.Int;
 
 import java.io.Serializable;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 
 /**

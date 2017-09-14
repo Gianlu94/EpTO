@@ -1,3 +1,5 @@
+package application;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -12,6 +14,7 @@ import akka.event.LoggingAdapter;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import scala.Int;
+import tests.Tests;
 
 /**
  * Created by gianluke on 24/08/17.
@@ -46,7 +49,7 @@ public class Application {
 		//create initial nodes
 		for (int i = 0; i < Global.N; i++){
 			ActorRef node = system.actorOf(Props.create(Node.class), "Node" + i);
-			node.tell(new Messages.StartingNode(Global.ST,Global.K,Global.C), null);
+			node.tell(new Messages.StartingNode(Global.ST, Global.K, Global.C), null);
 		}
 
 		terminal();
@@ -63,8 +66,8 @@ public class Application {
 		input = new Scanner(System.in);
 
 		while (true){
-			System.out.println("\n\n    1) How many events to spawn ");
-			System.out.println("    2) ....\n\n\n");
+			System.out.println("\n\n1) How many events to spawn ");
+			System.out.println("2) Test_1 : Verify Total Order ");
 			inputCommand = input.nextLine();
 
 			switch (inputCommand){
@@ -90,6 +93,15 @@ public class Application {
 					}
 					*/
 					//Global.deliveredEvents.clear();
+				case "2":
+					if (Tests.TestTotalOrder()){
+						System.out.println (" ----- TOTAL ORDER SATISFIED :) ");
+					}
+					else{
+						System.out.println (" ----- TOTAL ORDER IS NOT SATISFIED :( ");
+					}
+
+					break;
 				default:
 					break;
 			}

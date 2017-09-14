@@ -1,3 +1,5 @@
+package application;
+
 /**
  * Created by gianluke on 25/08/17.
  */
@@ -65,7 +67,12 @@ public class Event  implements Comparable<Event>{
 			return 1;
 		}
 		else if (this.getTs() == o.getTs()){
-			return  this.getSourceId()- o.getSourceId();
+			if (this.getSourceId() < o.getSourceId()){
+				return -1;
+			}
+			else {
+				return 1;
+			}
 		}
 
 		return 0;

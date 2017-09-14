@@ -1,10 +1,9 @@
+package application;
+
 import akka.actor.ActorRef;
 import akka.actor.UntypedActor;
-import akka.io.Tcp;
 import scala.concurrent.duration.Duration;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
