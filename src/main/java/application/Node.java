@@ -221,7 +221,7 @@ public class Node extends UntypedActor {
 	}
 
 	private void deliver (Event event){
-		Utils.writeOnAFile(pathLog,event.getId() + "\t" + event.getTs());
+		Utils.writeOnAFile(pathLog,event.getId());
 		//System.out.println("Node "+ myId + "delivered " + event.getId() );
 	}
 
