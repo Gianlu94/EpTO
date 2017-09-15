@@ -18,6 +18,15 @@ public class Event  implements Comparable<Event>{
 		setTtl(ttl);
 		setSourceId(sourceId);
 	}
+	public Event(long ts, int ttl, int sourceId, String id){
+		setTs(ts);
+		setTtl(ttl);
+		setSourceId(sourceId);
+		setId(id);
+	}
+	public Event(Event e){
+		this(e.ts,e.ttl,e.sourceId, e.id);		
+	}
 
 	public String getId() {
 		return id;

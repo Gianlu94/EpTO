@@ -91,7 +91,11 @@ public class Messages {
 		HashMap<String, Event> nextball;
 
 		public Ball (HashMap<String, Event> nextBall){
-			this.nextball= new HashMap<String, Event>(nextBall);
+			nextball = new HashMap <String, Event>();
+			for (String key : nextBall.keySet()){
+				this.nextball.put(key, new Event(nextBall.get(key)));
+			}
+			//this.nextball = new HashMap<String, Event>(nextBall);
 		}
 	}
 
