@@ -10,6 +10,7 @@ public class GlobalClock {
 	}
 
 	public static long getClock(){
-		return System.currentTimeMillis();
+		//return System.currentTimeMillis();
+		return System.nanoTime();
 	}
 }

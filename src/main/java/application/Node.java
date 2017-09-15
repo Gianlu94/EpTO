@@ -41,11 +41,13 @@ public class Node extends UntypedActor {
 
 			//ask Pss its id
 			Global.pss.tell(new Messages.IdRequest(), getSelf());
-			//ask Pss starting view
-			Global.pss.tell(new Messages.RequestView(myId), getSelf());
+
 		}
 		else if (message instanceof Messages.IdResponse){
 			myId = ((Messages.IdResponse) message).id;
+			
+			//ask Pss starting view
+			Global.pss.tell(new Messages.RequestView(myId), getSelf());
 
 		}
 		else if (message instanceof  Messages.ResponseView){
@@ -101,6 +103,7 @@ public class Node extends UntypedActor {
 			nextBall.clear();
 		}
 		else if (message instanceof Messages.Ball){
+
 			HashMap<String, Event> ball = ((Messages.Ball) message).nextball;
 
 			for (String key : ball.keySet()){
@@ -185,7 +188,7 @@ public class Node extends UntypedActor {
 		Iterator it = deliverableEvents.iterator();
 		while (it.hasNext()){
 			Event event = (Event) it.next();
-			if (event.getTs() > minQueuedTs){
+			if (event.getTs() >= minQueuedTs){
 				it.remove();
 			}
 			else{
@@ -218,7 +221,7 @@ public class Node extends UntypedActor {
 	}
 
 	private void deliver (Event event){
-		Utils.writeOnAFile(pathLog,event.getId());
+		Utils.writeOnAFile(pathLog,event.getId() + "\t" + event.getTs());
 		//System.out.println("Node "+ myId + "delivered " + event.getId() );
 	}
 
