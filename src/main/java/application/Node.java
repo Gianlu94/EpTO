@@ -169,6 +169,7 @@ public class Node extends UntypedActor {
 		}
 
 		Long minQueuedTs = Long.MAX_VALUE;
+		int minSourceId = -1;
 		HashSet<Event> deliverableEvents = new HashSet<Event>();
 
 		for (String key : received.keySet()){
@@ -180,6 +181,7 @@ public class Node extends UntypedActor {
 			else{
 				if (minQueuedTs > event.getTs()){
 					minQueuedTs = event.getTs();
+					minSourceId = event.getSourceId();
 				}
 			}
 
@@ -188,10 +190,13 @@ public class Node extends UntypedActor {
 		Iterator it = deliverableEvents.iterator();
 		while (it.hasNext()){
 			Event event = (Event) it.next();
-			if (event.getTs() >= minQueuedTs){
+			if (event.getTs() > minQueuedTs){
 				it.remove();
 			}
-			else{
+			else if ((event.getTs() == minQueuedTs) && (event.getSourceId() > minSourceId)) {
+				it.remove();
+			}
+			else {
 				received.remove(event.getId());
 			}
 		}
