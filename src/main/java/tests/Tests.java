@@ -1,6 +1,8 @@
 package tests;
 
 import java.util.ArrayList;
+
+import application.Global;
 import application.Utils;
 import org.jgrapht.DirectedGraph;
 import org.jgrapht.Graph;
@@ -25,6 +27,13 @@ public class Tests {
 		ArrayList<ArrayList<String>> logs = new ArrayList<ArrayList<String>>();
 		logs = Utils.uploadLogs();
 
+		int pLost = 0;
+
+		for (ArrayList<String> log : logs){
+			pLost = pLost + totMessages - log.size();
+		}
+
+		System.out.println("Percentage of msgs lost is " + ((double)pLost)/(totMessages* Global.N));
 
 	}
 }

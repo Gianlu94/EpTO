@@ -114,6 +114,7 @@ public class Application {
 					break;
 				case "3":
 					int totMessages = eventsRate * duration * Global.N;
+					Tests.TestPercentageMsgLost(totMessages);
 					break;
 				default:
 					break;
