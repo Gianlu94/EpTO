@@ -11,6 +11,7 @@ import akka.actor.ActorSystem;
 import akka.actor.Props;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
+import akka.japi.Util;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import scala.Int;
@@ -64,18 +65,26 @@ public class Application {
 		String firstCommand;
 
 		input = new Scanner(System.in);
+		int eventsRate = 0;
+		int duration = 0;
+
+		Utils.cleanEnvironment();
+
 
 		while (true){
 			System.out.println("\n\n1) How many events to spawn ");
-			System.out.println("2) Test_1 : Verify Total Order ");
+			System.out.println("2) Test_1: Verify Total Order ");
+			System.out.println("3) Test_2: Number of messages lost");
+			//System.out.println("    a) Percentage of messages lost ")
+
 			inputCommand = input.nextLine();
 
 			switch (inputCommand){
 				case "1":
 					System.out.print(" Option 1 ---- Insert number of events to spawn per second: ");
-					int eventsRate= Integer.parseInt(input.nextLine());
+					eventsRate= Integer.parseInt(input.nextLine());
 					System.out.print(" Option 1 ---- Insert duration of the spawn: ");
-					int duration = Integer.parseInt(input.nextLine());
+					duration = Integer.parseInt(input.nextLine());
 					Global.pss.tell(new Messages.StartingSpawnEvents(eventsRate,duration), null);
 					try {
 						for (int i = 0; i < (duration + 1); i++ ){
@@ -85,6 +94,7 @@ public class Application {
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
+					Global.runCounter++; //increment the run
 					break;
 					/*if(Global.deliveredEvents.size() != 0){
 						for (Event event : Global.deliveredEvents){
@@ -101,6 +111,9 @@ public class Application {
 						System.out.println (" ----- TOTAL ORDER IS NOT SATISFIED :( ");
 					}
 
+					break;
+				case "3":
+					int totMessages = eventsRate * duration * Global.N;
 					break;
 				default:
 					break;

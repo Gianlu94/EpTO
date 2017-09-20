@@ -20,4 +20,11 @@ public class Tests {
 		System.out.println("\nRESULT : "+result);
 		return result;
 	}
+
+	public static void TestPercentageMsgLost (int totMessages){
+		ArrayList<ArrayList<String>> logs = new ArrayList<ArrayList<String>>();
+		logs = Utils.uploadLogs();
+
+
+	}
 }

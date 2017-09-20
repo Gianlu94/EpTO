@@ -19,8 +19,11 @@ public class Global {
 	public static double C;         //churn
 	public static double D;         //drift
 
+	public static int runCounter = 0;
+
 	public static ActorRef pss;     //pss
 
 	public static String pathOutPut = "./output/";
-	public static String pathNode = pathOutPut + "Node-";
+	public static String pathToRun = pathOutPut + "run-";
+	public static String pathNode = "/Node-";
 }

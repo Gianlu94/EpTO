@@ -1,6 +1,7 @@
 package application;
 
 import akka.actor.ActorRef;
+import org.apache.commons.io.FileUtils;
 import org.jgrapht.DirectedGraph;
 import org.jgrapht.EdgeFactory;
 import org.jgrapht.Graph;
@@ -76,13 +77,13 @@ public class Utils {
 	//Method used to load all logs
 	public static ArrayList<ArrayList<String>> uploadLogs (){
 
-		File file = new File (Global.pathOutPut);
+		String pathToRun = Global.pathToRun+(Global.runCounter - 1)+"/";
+		File file = new File (pathToRun);
 		String [] folders = file.list();
 		ArrayList<ArrayList<String>> logs = new ArrayList<ArrayList<String>>();
 
 		for (String folder : folders) {
-
-			String pathLog = Global.pathOutPut + folder + "/Log.txt";
+			String pathLog = pathToRun + folder + "/Log.txt";
 			ArrayList<String> log = new ArrayList<String>(); //one log
 
 			try {
@@ -135,5 +136,20 @@ public class Utils {
 		TarjanSimpleCycles finderCycles = new TarjanSimpleCycles(logsGraph);
 		System.out.println("***** CYCLE"+ finderCycles.findSimpleCycles().toString());
 		return finderCycles.findSimpleCycles().isEmpty();
+	}
+
+	//get path to log for node
+	public static String getPathToLog (int nodeId){
+		return Global.pathToRun + Global.runCounter + Global.pathNode + nodeId + "/Log.txt";
+	}
+
+	//clean the environment
+	public static void cleanEnvironment (){
+		File output = new File(Global.pathOutPut);
+		try {
+			FileUtils.cleanDirectory(output);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }

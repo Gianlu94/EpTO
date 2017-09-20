@@ -58,7 +58,7 @@ public class Node extends UntypedActor {
 		else if (message instanceof Messages.EventsRateCommunication){
 			Messages.EventsRateCommunication msg = (Messages.EventsRateCommunication)message;
 			//System.out.println ("Node "+ myId + " received spawn order");
-			pathLog = Global.pathNode + myId+ "/Log.txt";
+			pathLog = Utils.getPathToLog(myId);
 			Utils.createFile(pathLog);
 
 			scheduleEvents(msg.eventsRate, msg.duration);
