@@ -1,9 +1,11 @@
 package tests;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import application.Global;
 import application.Utils;
+import com.opencsv.CSVWriter;
 import org.jgrapht.DirectedGraph;
 import org.jgrapht.Graph;
 
@@ -34,6 +36,25 @@ public class Tests {
 		}
 
 		System.out.println("Percentage of msgs lost is " + ((double)pLost)/(totMessages* Global.N));
+
+
+		CSVWriter writerCsv = Utils.openCsv(Global.pathToCsvRun);
+
+		//Collecting parameters of the run
+		String [] parameters = new String[4];
+		parameters[0] = String.valueOf(Global.N);
+		parameters[1] = String.valueOf(Global.TTL);
+		parameters[2] = String.valueOf(totMessages * Global.N);
+		parameters[3] = String.valueOf(pLost);
+
+		//Write parameters on the csv
+		writerCsv.writeNext(parameters);
+
+		try {
+			writerCsv.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 	}
 }

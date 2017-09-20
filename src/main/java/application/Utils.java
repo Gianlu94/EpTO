@@ -1,6 +1,7 @@
 package application;
 
 import akka.actor.ActorRef;
+import com.opencsv.CSVWriter;
 import org.apache.commons.io.FileUtils;
 import org.jgrapht.DirectedGraph;
 import org.jgrapht.EdgeFactory;
@@ -151,5 +152,19 @@ public class Utils {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	//open a csv file if exists otherwise create it
+	public static CSVWriter openCsv (String csvPath ){
+
+		CSVWriter writerCsv = null;
+
+		try {
+			writerCsv = new CSVWriter(new FileWriter(csvPath,true));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return writerCsv;
 	}
 }
