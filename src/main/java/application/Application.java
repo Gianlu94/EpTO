@@ -14,8 +14,13 @@ import akka.event.LoggingAdapter;
 import akka.japi.Util;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
+import org.jfree.ui.ApplicationFrame;
+import org.jfree.ui.RefineryUtilities;
 import scala.Int;
+import tests.LineChart;
 import tests.Tests;
+
+import javax.swing.*;
 
 /**
  * Created by gianluke on 24/08/17.
@@ -75,6 +80,7 @@ public class Application {
 			System.out.println("\n\n1) How many events to spawn ");
 			System.out.println("2) Test_1: Verify Total Order ");
 			System.out.println("3) Test_2: Number of messages lost");
+			System.out.println("    3a) Percentage of msgs lost chart");
 			//System.out.println("    a) Percentage of messages lost ")
 
 			inputCommand = input.nextLine();
@@ -115,6 +121,12 @@ public class Application {
 				case "3":
 					int totMessages = eventsRate * duration * Global.N;
 					Tests.TestPercentageMsgLost(totMessages);
+					break;
+				case "3a":
+					LineChart lineChart = new LineChart("Percentage of msgs lost", "N", "%lost",Global.pathToCsvRun);
+					lineChart.pack();
+					RefineryUtilities.centerFrameOnScreen(lineChart);
+					lineChart.setVisible(true);
 					break;
 				default:
 					break;

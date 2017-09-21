@@ -1,8 +1,10 @@
 package application;
 
 import akka.actor.ActorRef;
+import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
 import org.apache.commons.io.FileUtils;
+import org.jfree.data.xy.XYSeries;
 import org.jgrapht.DirectedGraph;
 import org.jgrapht.EdgeFactory;
 import org.jgrapht.Graph;
@@ -166,5 +168,38 @@ public class Utils {
 		}
 
 		return writerCsv;
+	}
+
+	//fill series for the chart (by reading from csv file)
+	public static XYSeries fillSeries (String pathToCsv){
+		CSVReader readerCsv = null;
+		XYSeries series = new XYSeries("First");
+
+		try {
+			readerCsv = new CSVReader(new FileReader(pathToCsv));
+		} catch (FileNotFoundException e) {
+			System.out.println("ERROR: An error occured while opening CSV " + pathToCsv);
+		}
+
+		String [] values;
+		try {
+			while ((values = readerCsv.readNext())!= null){
+				series.add(Integer.parseInt(values[0]), (Double.parseDouble(values[3]))/
+						Integer.parseInt(values[2]));
+			}
+		} catch (IOException e) {
+			System.out.println("ERROR: An error occured while reading CSV " + pathToCsv);
+
+		}
+		finally {
+			try {
+				readerCsv.close();
+			} catch (IOException e) {
+				System.out.println("ERROR: An error occured while closing CSV " + pathToCsv);
+			}
+		}
+
+		return series;
+
 	}
 }
