@@ -123,7 +123,12 @@ public class Application {
 					Tests.TestPercentageMsgLost(totMessages);
 					break;
 				case "3a":
-					LineChart lineChart = new LineChart("Percentage of msgs lost", "N", "%lost",Global.pathToCsvRun);
+					String [] legendToDisplay = new String[3];
+					legendToDisplay[0] = "N = number of nodes" ;
+					legendToDisplay[1] = "TTL = " + Global.TTL;
+					legendToDisplay[2] = "K = " + Global.K;
+
+					LineChart lineChart = new LineChart("Percentage of msgs lost", "N", "%lost",legendToDisplay,Global.pathToCsvRun);
 					lineChart.pack();
 					RefineryUtilities.centerFrameOnScreen(lineChart);
 					lineChart.setVisible(true);
