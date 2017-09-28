@@ -104,4 +104,20 @@ public class Messages {
 	//message to simulate each round
 	public static class Round implements Serializable{};
 
+	//message sent to pss to start a new round
+	public static class StartRun implements Serializable{
+		int n;
+		int ttl;
+		int k;
+		int eventsRate;
+		int duration;
+
+		public StartRun (int n, int ttl, int k, int eventsRate, int duration){
+			this.n = n;
+			this.ttl = ttl;
+			this.k = k;
+			this.eventsRate = eventsRate;
+			this.duration = duration;
+		}
+	}
 }

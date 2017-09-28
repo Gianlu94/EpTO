@@ -81,6 +81,7 @@ public class Application {
 			System.out.println("2) Test_1: Verify Total Order ");
 			System.out.println("3) Test_2: Number of messages lost");
 			System.out.println("    3a) Percentage of msgs lost chart");
+			System.out.println("    3b) Plot on the variation of N ");
 			//System.out.println("    a) Percentage of messages lost ")
 
 			inputCommand = input.nextLine();
@@ -133,6 +134,35 @@ public class Application {
 					RefineryUtilities.centerFrameOnScreen(lineChart);
 					lineChart.setVisible(true);
 					break;
+				case "3b)":
+					int n;  //nodes to create
+					int s;  //creation step
+					int ttl;
+					int k;
+
+					System.out.print("      Option 3b ---- Number of nodes ");
+					n = Integer.parseInt(input.nextLine());
+					System.out.print("      Option 3b ---- Incremental step ");
+					s = Integer.parseInt(input.nextLine());
+					System.out.print("      Option 3b ---- TTL: ");
+					ttl = Integer.parseInt(input.nextLine());
+					System.out.print("      Option 3b ---- K : ");
+					k = Integer.parseInt(input.nextLine());
+					System.out.print("      Option 3b ---- Insert number of events to spawn per second: ");
+					eventsRate= Integer.parseInt(input.nextLine());
+					System.out.print("      Option 3b ---- Insert duration of the spawn: ");
+					duration = Integer.parseInt(input.nextLine());
+
+					for (int i = 10; i < n; i = i + s){
+						Global.pss.tell(new Messages.StartRun(n,ttl,k,eventsRate,duration), null);
+						try {
+							Thread.sleep((duration + 1)*1000);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+					}
+
+
 				default:
 					break;
 			}
