@@ -202,4 +202,16 @@ public class Utils {
 		return series;
 
 	}
+
+	//method use to create a legend for a chart
+	public static String [] createLegend (String ... items){
+		String [] legendToDisplay = new String [items.length];
+
+		for (int i = 0; i < items.length; i++){
+			legendToDisplay[i] = items[i];
+		}
+
+		return legendToDisplay;
+
+	}
 }

@@ -126,11 +126,8 @@ public class Application {
 					Tests.TestPercentageMsgLost(totMessages, 0);
 					break;
 				case "3a":
-					String [] legendToDisplay = new String[3];
-					legendToDisplay[0] = "N = number of nodes" ;
-					legendToDisplay[1] = "TTL = " + Global.TTL;
-					legendToDisplay[2] = "K = " + Global.K;
-
+					String [] legendToDisplay = Utils.createLegend("N = number of Nodes", "TTL = " + Global.TTL,
+							"K = "+ Global.K);
 					LineChart lineChart = new LineChart("Percentage of msgs lost", "N", "%lost",legendToDisplay,Global.pathToCsvRun);
 					lineChart.pack();
 					RefineryUtilities.centerFrameOnScreen(lineChart);
@@ -198,10 +195,9 @@ public class Application {
 						Tests.TestPercentageMsgLost(totMessagesRun,1);
 
 					}
-					String [] legendToDisplay2 = new String[3];
-					legendToDisplay2[0] = "N = number of nodes" ;
-					legendToDisplay2[1] = "TTL = " + Global.TTL;
-					legendToDisplay2[2] = "K = " + Global.K;
+
+					String [] legendToDisplay2 = Utils.createLegend("N = number of Nodes", "TTL = " + Global.TTL,
+							"K = "+ Global.K);
 
 					LineChart lineChart2 = new LineChart("Percentage of msgs lost", "N", "%lost",legendToDisplay2,Global.pathToCsvGroupRun);
 					lineChart2.pack();
