@@ -80,10 +80,11 @@ public class Application {
 
 		while (true){
 			System.out.println("\n\n1) How many events to spawn ");
-			System.out.println("2) Test_1: Verify Total Order ");
-			System.out.println("3) Test_2: Number of messages lost");
-			System.out.println("    3a) Percentage of msgs lost chart");
-			System.out.println("    3b) Plot on the variation of N ");
+			System.out.println("2) Change algorithm's parameters ");
+			System.out.println("3) Test_1: Verify Total Order ");
+			System.out.println("4) Test_2: Number of messages lost");
+			System.out.println("    4a) Percentage of msgs lost chart");
+			System.out.println("    4b) Plot on the variation of N ");
 			//System.out.println("    a) Percentage of messages lost ")
 
 			inputCommand = input.nextLine();
@@ -113,6 +114,99 @@ public class Application {
 					*/
 					//Global.deliveredEvents.clear();
 				case "2":
+					while (!inputCommand.equals("b")){
+						System.out.println("    2a) Number of nodes  ");
+						System.out.println("    2b) Node view size  ");
+						System.out.println("    2c) K ");
+						System.out.println("    2d) TTL  ");
+						System.out.println("    2e) Round duration ");
+						System.out.println("    2f) Churn ");
+						System.out.println("    2g) Process drift ");
+						System.out.println("    b = go back  ");
+
+						inputCommand = input.nextLine();
+
+						switch (inputCommand) {
+							case "2a":
+								System.out.print("Insert new n: " );
+								try{
+									String n = input.nextLine();
+									Global.N = Integer.parseInt(n);
+								}
+								catch (Exception e) {
+									System.out.println("ERROR : Try again\n");
+								}
+								break;
+							case "2b":
+								System.out.print("Insert new view size: " );
+								try{
+									String sv = input.nextLine();
+									Global.SV = Integer.parseInt(sv);
+								}
+								catch (Exception e) {
+									System.out.println("ERROR : Try again\n");
+								}
+								break;
+							case "2c":
+								System.out.print("Insert new K: " );
+								try{
+									String k = input.nextLine();
+									Global.K = Integer.parseInt(k);
+								}
+								catch (Exception e) {
+									System.out.println("ERROR : Try again\n");
+								}
+								break;
+							case "2d":
+								System.out.print("Insert new TTL: " );
+								try{
+									String ttl = input.nextLine();
+									Global.TTL = Integer.parseInt(ttl);
+								}
+								catch (Exception e) {
+									System.out.println("ERROR : Try again\n");
+								}
+								break;
+							case "2e":
+								System.out.print("Insert new round duration: " );
+								try{
+									String rd = input.nextLine();
+									Global.RD = Integer.parseInt(rd);
+								}
+								catch (Exception e) {
+									System.out.println("ERROR : Try again\n");
+								}
+								break;
+							case "2f":
+								System.out.print("Insert new churn: " );
+								try{
+									String c = input.nextLine();
+									Global.C = Double.parseDouble(c);
+								}
+								catch (Exception e) {
+									System.out.println("ERROR : Try again\n");
+								}
+								break;
+							case "2g":
+								System.out.print("Insert new process drift: " );
+								try{
+									String pd = input.nextLine();
+									Global.D = Double.parseDouble(pd);
+								}
+								catch (Exception e) {
+									System.out.println("ERROR : Try again\n");
+								}
+								break;
+
+							case "b":
+								break;
+							default:
+								break;
+						}
+
+					}
+					break;
+				case "3":
 					if (Tests.TestTotalOrder()){
 						System.out.println (" ----- TOTAL ORDER SATISFIED :) ");
 					}
@@ -121,11 +215,11 @@ public class Application {
 					}
 
 					break;
-				case "3":
+				case "4":
 					int totMessages = eventsRate * duration * Global.N;
 					Tests.TestPercentageMsgLost(totMessages, 0);
 					break;
-				case "3a":
+				case "4a":
 					String [] legendToDisplay = Utils.createLegend("N = number of Nodes", "TTL = " + Global.TTL,
 							"K = "+ Global.K);
 					LineChart lineChart = new LineChart("Percentage of msgs lost", "N", "%lost",legendToDisplay,Global.pathToCsvRun);
@@ -133,7 +227,7 @@ public class Application {
 					RefineryUtilities.centerFrameOnScreen(lineChart);
 					lineChart.setVisible(true);
 					break;
-				case "3b":
+				case "4b":
 					int n;  //nodes to create
 					int s;  //creation step
 					int ttl;
