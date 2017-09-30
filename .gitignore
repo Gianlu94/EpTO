@@ -5,4 +5,5 @@
 
 # Java class files
 *.class
+/output
 

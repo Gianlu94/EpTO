@@ -27,6 +27,8 @@ import javax.swing.*;
  */
 public class Application {
 
+	private static ActorSystem system;
+
 	public static void main (String [] args){
 
 		//Load paramenters from Parameters configuration file
@@ -47,7 +49,7 @@ public class Application {
 			System.err.println("ERROR: Loading parameters failed");
 		}
 
-		final ActorSystem system = ActorSystem.create("mysystem");
+		system = ActorSystem.create("mysystem");
 		//create PSS process
 		Global.pss = system.actorOf(Props.create(PSS.class), "PSS");
 		Global.pss.tell(new Messages.StartingPss(), null);
@@ -55,7 +57,7 @@ public class Application {
 		//create initial nodes
 		for (int i = 0; i < Global.N; i++){
 			ActorRef node = system.actorOf(Props.create(Node.class), "Node" + i);
-			node.tell(new Messages.StartingNode(Global.ST, Global.K, Global.C), null);
+			node.tell(new Messages.StartingNode(Global.K, Global.C), null);
 		}
 
 		terminal();
@@ -121,7 +123,7 @@ public class Application {
 					break;
 				case "3":
 					int totMessages = eventsRate * duration * Global.N;
-					Tests.TestPercentageMsgLost(totMessages);
+					Tests.TestPercentageMsgLost(totMessages, 0);
 					break;
 				case "3a":
 					String [] legendToDisplay = new String[3];
@@ -134,7 +136,7 @@ public class Application {
 					RefineryUtilities.centerFrameOnScreen(lineChart);
 					lineChart.setVisible(true);
 					break;
-				case "3b)":
+				case "3b":
 					int n;  //nodes to create
 					int s;  //creation step
 					int ttl;
@@ -146,22 +148,65 @@ public class Application {
 					s = Integer.parseInt(input.nextLine());
 					System.out.print("      Option 3b ---- TTL: ");
 					ttl = Integer.parseInt(input.nextLine());
+					Global.TTL = ttl; //update
 					System.out.print("      Option 3b ---- K : ");
 					k = Integer.parseInt(input.nextLine());
+					Global.K = k;   //update
 					System.out.print("      Option 3b ---- Insert number of events to spawn per second: ");
 					eventsRate= Integer.parseInt(input.nextLine());
 					System.out.print("      Option 3b ---- Insert duration of the spawn: ");
 					duration = Integer.parseInt(input.nextLine());
 
-					for (int i = 10; i < n; i = i + s){
-						Global.pss.tell(new Messages.StartRun(n,ttl,k,eventsRate,duration), null);
+					for (int i = 20; i <= n; i = i + s){
+
+						//start a new run
+						Global.pss.tell(new Messages.ShutDownNodes(), null);
+						//update
+						Global.N = i;
+
+						//wait
+						try {
+							Thread.sleep(1000);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+
+						//create nodes for the current run
+						for (int j = 0;  j < i; j++){
+							ActorRef node = system.actorOf(Props.create(Node.class), "Node" + j);
+							node.tell(new Messages.StartingNode(k, Global.C), null);
+						}
+
+						//wait
+						try {
+							Thread.sleep(1000);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+
+						Global.pss.tell(new Messages.StartingSpawnEvents(eventsRate,duration), null);
+
+						//wait
 						try {
 							Thread.sleep((duration + 1)*1000);
 						} catch (InterruptedException e) {
 							e.printStackTrace();
 						}
-					}
 
+						Global.runCounter++;
+						int totMessagesRun = eventsRate * duration * i;
+						Tests.TestPercentageMsgLost(totMessagesRun,1);
+
+					}
+					String [] legendToDisplay2 = new String[3];
+					legendToDisplay2[0] = "N = number of nodes" ;
+					legendToDisplay2[1] = "TTL = " + Global.TTL;
+					legendToDisplay2[2] = "K = " + Global.K;
+
+					LineChart lineChart2 = new LineChart("Percentage of msgs lost", "N", "%lost",legendToDisplay2,Global.pathToCsvGroupRun);
+					lineChart2.pack();
+					RefineryUtilities.centerFrameOnScreen(lineChart2);
+					lineChart2.setVisible(true);
 
 				default:
 					break;

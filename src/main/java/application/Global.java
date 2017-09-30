@@ -27,4 +27,5 @@ public class Global {
 	public static String pathToRun = pathOutPut + "run-";
 	public static String pathNode = "/Node-";
 	public static String pathToCsvRun = pathOutPut + "dataRun.csv";
+	public static String pathToCsvGroupRun = pathOutPut + "dataGroupRun.csv";
 }

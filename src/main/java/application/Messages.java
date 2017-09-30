@@ -19,12 +19,10 @@ public class Messages {
 
 	//informs a node about PSS, schedule time event and churn
 	public static class StartingNode implements Serializable{
-		int st;
 		int k;
 		double churn;
 
-		public StartingNode (int st, int k, double churn){
-			this.st = st;
+		public StartingNode (int k, double churn){
 			this.k = k;
 			this.churn = churn;
 		}
@@ -104,20 +102,6 @@ public class Messages {
 	//message to simulate each round
 	public static class Round implements Serializable{};
 
-	//message sent to pss to start a new round
-	public static class StartRun implements Serializable{
-		int n;
-		int ttl;
-		int k;
-		int eventsRate;
-		int duration;
-
-		public StartRun (int n, int ttl, int k, int eventsRate, int duration){
-			this.n = n;
-			this.ttl = ttl;
-			this.k = k;
-			this.eventsRate = eventsRate;
-			this.duration = duration;
-		}
-	}
+	//message sent to pss to shutdown nodes
+	public static class ShutDownNodes implements Serializable{}
 }

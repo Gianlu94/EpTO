@@ -25,7 +25,7 @@ public class Tests {
 		return result;
 	}
 
-	public static void TestPercentageMsgLost (int totMessages){
+	public static void TestPercentageMsgLost (int totMessages, int typeOfRun){
 		ArrayList<ArrayList<String>> logs = new ArrayList<ArrayList<String>>();
 		logs = Utils.uploadLogs();
 
@@ -38,7 +38,13 @@ public class Tests {
 		System.out.println("Percentage of msgs lost is " + ((double)pLost)/(totMessages* Global.N));
 
 
-		CSVWriter writerCsv = Utils.openCsv(Global.pathToCsvRun);
+		CSVWriter writerCsv = null;
+		if (typeOfRun == 0){ //single Run
+			writerCsv = Utils.openCsv(Global.pathToCsvRun);
+		}
+		else { //groupRun
+			writerCsv = Utils.openCsv(Global.pathToCsvGroupRun);
+		}
 
 		//Collecting parameters of the run
 		String [] parameters = new String[4];

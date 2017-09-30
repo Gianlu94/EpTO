@@ -1,6 +1,8 @@
 package application;
 
 import akka.actor.ActorRef;
+import akka.actor.Kill;
+import akka.actor.PoisonPill;
 import akka.actor.UntypedActor;
 import scala.concurrent.duration.Duration;
 
@@ -40,7 +42,7 @@ public class PSS extends UntypedActor {
 			}
 			else{
 				getContext().system().scheduler().scheduleOnce(
-						Duration.create(1, TimeUnit.SECONDS), getSelf(),
+						Duration.create(400, TimeUnit.MILLISECONDS), getSelf(),
 						message, getContext().system().dispatcher(), getSender()
 						);
 			}
@@ -48,6 +50,10 @@ public class PSS extends UntypedActor {
 		else if (message instanceof Messages.StartingSpawnEvents){
 			Messages.StartingSpawnEvents msg = (Messages.StartingSpawnEvents)message;
 			spawnEvents(msg.eventsRate, msg.duration);
+		}
+		else if (message instanceof  Messages.ShutDownNodes){
+			Messages.ShutDownNodes msg = (Messages.ShutDownNodes)message;
+			shutdownNodes();
 		}
 
 
@@ -69,6 +75,15 @@ public class PSS extends UntypedActor {
 	private void spawnEvents (int eventsRate, int duration){
 		for (int key: nodes.keySet()){
 			nodes.get(key).tell(new Messages.EventsRateCommunication(eventsRate,duration), null);
+		}
+	}
+
+	private void shutdownNodes (){
+		if (nodes != null){
+			for (int key : nodes.keySet()){
+				nodes.get(key).tell(PoisonPill.getInstance(), null);
+			}
+			nodes.clear();
 		}
 	}
 

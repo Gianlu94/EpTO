@@ -35,7 +35,6 @@ public class Node extends UntypedActor {
 		if (message instanceof  Messages.StartingNode){
 			Messages.StartingNode msg = (Messages.StartingNode)message;
 
-			st = msg.st;
 			k = msg.k;
 			churn = msg.churn;
 
