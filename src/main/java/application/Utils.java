@@ -183,10 +183,20 @@ public class Utils {
 
 		String [] values;
 		try {
-			while ((values = readerCsv.readNext())!= null){
-				series.add(Integer.parseInt(values[0]), (Double.parseDouble(values[3]))/
-						Integer.parseInt(values[2]));
+			if (pathToCsv.equals(Global.pathToCsvGroupRunNodes) || pathToCsv.equals(Global.pathToCsvRun)){
+				while ((values = readerCsv.readNext())!= null){
+					series.add(Integer.parseInt(values[0]), (Double.parseDouble(values[3]))/
+							Integer.parseInt(values[2]));
+				}
 			}
+			else {
+				while ((values = readerCsv.readNext())!= null){
+					series.add(Integer.parseInt(values[1]), (Double.parseDouble(values[3]))/
+							Integer.parseInt(values[2]));
+				}
+
+			}
+
 		} catch (IOException e) {
 			System.out.println("ERROR: An error occured while reading CSV " + pathToCsv);
 
@@ -213,5 +223,16 @@ public class Utils {
 
 		return legendToDisplay;
 
+	}
+
+	//method to calculate log base 2 of a given number
+	public static double log2 (int n){
+		return Math.log(n) / Math.log(2);
+	}
+
+	//method to delete a specific file (given a path)
+	public static void deleteFile (String pathFile){
+		File file = new File (pathFile);
+		file.delete();
 	}
 }

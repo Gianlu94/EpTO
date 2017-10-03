@@ -7,7 +7,6 @@ import application.Global;
 import application.Utils;
 import com.opencsv.CSVWriter;
 import org.jgrapht.DirectedGraph;
-import org.jgrapht.Graph;
 
 /**
  * Created by gianluke on 31/08/17.
@@ -42,8 +41,11 @@ public class Tests {
 		if (typeOfRun == 0){ //single Run
 			writerCsv = Utils.openCsv(Global.pathToCsvRun);
 		}
-		else { //groupRun
-			writerCsv = Utils.openCsv(Global.pathToCsvGroupRun);
+		else if (typeOfRun == 1) { //groupRun
+			writerCsv = Utils.openCsv(Global.pathToCsvGroupRunNodes);
+		}
+		else{
+			writerCsv = Utils.openCsv(Global.pathToCsvGroupRunTTL);
 		}
 
 		//Collecting parameters of the run

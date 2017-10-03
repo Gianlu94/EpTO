@@ -14,6 +14,8 @@ import org.jfree.ui.ApplicationFrame;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 
 /**
  * Created by gianluke on 21/09/17.
@@ -28,6 +30,17 @@ public class LineChart extends JFrame {
 		ChartPanel chartPanel = new ChartPanel(chart);
 		chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
 		setContentPane(chartPanel);
+
+		/*
+		saving chart
+		try {
+			ChartUtilities.saveChartAsPNG(new File("./chart.png"), chart,300,600);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		*/
+
+
 
 	}
 

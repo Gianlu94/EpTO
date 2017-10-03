@@ -1,26 +1,17 @@
 package application;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Scanner;
-import java.util.Vector;
 
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import akka.actor.Props;
-import akka.event.Logging;
-import akka.event.LoggingAdapter;
 import akka.japi.Util;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
-import org.jfree.ui.ApplicationFrame;
 import org.jfree.ui.RefineryUtilities;
-import scala.Int;
 import tests.LineChart;
 import tests.Tests;
-
-import javax.swing.*;
 
 /**
  * Created by gianluke on 24/08/17.
@@ -85,6 +76,7 @@ public class Application {
 			System.out.println("4) Test_2: Number of messages lost");
 			System.out.println("    4a) Percentage of msgs lost chart");
 			System.out.println("    4b) Plot on the variation of N ");
+			System.out.println("    4c) Plot on the variation of TTL ");
 			//System.out.println("    a) Percentage of messages lost ")
 
 			inputCommand = input.nextLine();
@@ -116,12 +108,10 @@ public class Application {
 				case "2":
 					while (!inputCommand.equals("b")){
 						System.out.println("    2a) Number of nodes  ");
-						System.out.println("    2b) Node view size  ");
-						System.out.println("    2c) K ");
-						System.out.println("    2d) TTL  ");
-						System.out.println("    2e) Round duration ");
-						System.out.println("    2f) Churn ");
-						System.out.println("    2g) Process drift ");
+						System.out.println("    2b) K ");
+						System.out.println("    2c) TTL  ");
+						System.out.println("    2d) Churn ");
+						System.out.println("    2e) Process drift ");
 						System.out.println("    b = go back  ");
 
 						inputCommand = input.nextLine();
@@ -132,22 +122,13 @@ public class Application {
 								try{
 									String n = input.nextLine();
 									Global.N = Integer.parseInt(n);
+									//Todo:
 								}
 								catch (Exception e) {
 									System.out.println("ERROR : Try again\n");
 								}
 								break;
 							case "2b":
-								System.out.print("Insert new view size: " );
-								try{
-									String sv = input.nextLine();
-									Global.SV = Integer.parseInt(sv);
-								}
-								catch (Exception e) {
-									System.out.println("ERROR : Try again\n");
-								}
-								break;
-							case "2c":
 								System.out.print("Insert new K: " );
 								try{
 									String k = input.nextLine();
@@ -157,7 +138,7 @@ public class Application {
 									System.out.println("ERROR : Try again\n");
 								}
 								break;
-							case "2d":
+							case "2c":
 								System.out.print("Insert new TTL: " );
 								try{
 									String ttl = input.nextLine();
@@ -167,17 +148,7 @@ public class Application {
 									System.out.println("ERROR : Try again\n");
 								}
 								break;
-							case "2e":
-								System.out.print("Insert new round duration: " );
-								try{
-									String rd = input.nextLine();
-									Global.RD = Integer.parseInt(rd);
-								}
-								catch (Exception e) {
-									System.out.println("ERROR : Try again\n");
-								}
-								break;
-							case "2f":
+							case "2d":
 								System.out.print("Insert new churn: " );
 								try{
 									String c = input.nextLine();
@@ -187,7 +158,7 @@ public class Application {
 									System.out.println("ERROR : Try again\n");
 								}
 								break;
-							case "2g":
+							case "2e":
 								System.out.print("Insert new process drift: " );
 								try{
 									String pd = input.nextLine();
@@ -233,47 +204,27 @@ public class Application {
 					int ttl;
 					int k;
 
-					System.out.print("      Option 3b ---- Number of nodes ");
+					//delete csv
+					Utils.deleteFile(Global.pathToCsvGroupRunNodes);
+
+					System.out.print("      Option 4b ---- Number of nodes ");
 					n = Integer.parseInt(input.nextLine());
-					System.out.print("      Option 3b ---- Incremental step ");
+					System.out.print("      Option 4b ---- Incremental step ");
 					s = Integer.parseInt(input.nextLine());
-					System.out.print("      Option 3b ---- TTL: ");
+					System.out.print("      Option 4b ---- TTL: ");
 					ttl = Integer.parseInt(input.nextLine());
 					Global.TTL = ttl; //update
-					System.out.print("      Option 3b ---- K : ");
+					System.out.print("      Option 4b ---- K : ");
 					k = Integer.parseInt(input.nextLine());
 					Global.K = k;   //update
-					System.out.print("      Option 3b ---- Insert number of events to spawn per second: ");
+					System.out.print("      Option 4b ---- Insert number of events to spawn per second: ");
 					eventsRate= Integer.parseInt(input.nextLine());
-					System.out.print("      Option 3b ---- Insert duration of the spawn: ");
+					System.out.print("      Option 4b ---- Insert duration of the spawn: ");
 					duration = Integer.parseInt(input.nextLine());
 
 					for (int i = 20; i <= n; i = i + s){
 
-						//start a new run
-						Global.pss.tell(new Messages.ShutDownNodes(), null);
-						//update
-						Global.N = i;
-
-						//wait
-						try {
-							Thread.sleep(1000);
-						} catch (InterruptedException e) {
-							e.printStackTrace();
-						}
-
-						//create nodes for the current run
-						for (int j = 0;  j < i; j++){
-							ActorRef node = system.actorOf(Props.create(Node.class), "Node" + j);
-							node.tell(new Messages.StartingNode(k, Global.C), null);
-						}
-
-						//wait
-						try {
-							Thread.sleep(1000);
-						} catch (InterruptedException e) {
-							e.printStackTrace();
-						}
+						createNodes(i);
 
 						Global.pss.tell(new Messages.StartingSpawnEvents(eventsRate,duration), null);
 
@@ -293,14 +244,102 @@ public class Application {
 					String [] legendToDisplay2 = Utils.createLegend("N = number of Nodes", "TTL = " + Global.TTL,
 							"K = "+ Global.K);
 
-					LineChart lineChart2 = new LineChart("Percentage of msgs lost", "N", "%lost",legendToDisplay2,Global.pathToCsvGroupRun);
+					LineChart lineChart2 = new LineChart("Percentage of msgs lost", "N", "%lost",legendToDisplay2,Global.pathToCsvGroupRunNodes);
 					lineChart2.pack();
 					RefineryUtilities.centerFrameOnScreen(lineChart2);
 					lineChart2.setVisible(true);
+					break;
+				case "4c":
+					int n2;  //nodes to create
+					int s2;  //creation step
+					int ttl2;
+					int k2;
 
+					Utils.deleteFile(Global.pathToCsvGroupRunTTL);
+
+					System.out.print("      Option 4c ---- Number of nodes ");
+					n2 = Integer.parseInt(input.nextLine());
+					System.out.print("      Option 4c ---- Final TTL: ");
+					ttl2 = Integer.parseInt(input.nextLine());
+					System.out.print("      Option 4c ---- Incremental step ");
+					s2 = Integer.parseInt(input.nextLine());
+					System.out.print("      Option 4c ---- K : ");
+					k2 = Integer.parseInt(input.nextLine());
+					Global.K = k2;   //update
+					System.out.print("      Option 4c ---- Insert number of events to spawn per second: ");
+					eventsRate= Integer.parseInt(input.nextLine());
+					System.out.print("      Option 4c ---- Insert duration of the spawn: ");
+					duration = Integer.parseInt(input.nextLine());
+
+
+					createNodes(n2);
+
+
+					for (int i = 2; i <= ttl2; i = i + s2){
+
+
+						//update
+						Global.TTL = i;
+
+
+						Global.pss.tell(new Messages.StartingSpawnEvents(eventsRate,duration), null);
+
+						//wait
+						try {
+							Thread.sleep((duration + 1)*1000);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+
+						Global.runCounter++;
+						int totMessagesRun = eventsRate * duration * n2;
+						Tests.TestPercentageMsgLost(totMessagesRun,2);
+
+					}
+
+					String [] legendToDisplay3 = Utils.createLegend("N = "+Global.N,
+							"K = "+ Global.K, "Theoretical TTL "+ Math.ceil(2*Utils.log2(Global.N)));
+
+					LineChart lineChart3 = new LineChart("Percentage of msgs lost", "TTL", "%lost",legendToDisplay3,Global.pathToCsvGroupRunTTL);
+					lineChart3.pack();
+					RefineryUtilities.centerFrameOnScreen(lineChart3);
+					lineChart3.setVisible(true);
+
+					break;
 				default:
 					break;
 			}
+
 		}
+	}
+
+	private static void createNodes (int N){
+
+		//update
+		Global.N = N;
+
+		Global.pss.tell(new Messages.ShutDownNodes(), null);
+
+		//wait
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+
+		//create nodes for the current run
+		for (int i = 0;  i < N; i++){
+			ActorRef node = system.actorOf(Props.create(Node.class), "Node" + i);
+			node.tell(new Messages.StartingNode(i, Global.C), null);
+		}
+
+		//wait
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+
+
 	}
 }
