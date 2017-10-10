@@ -36,6 +36,7 @@ public class Application {
 			Global.ST = parameters.getInt("ST.value");
 			Global.C = parameters.getDouble("C.value");
 			Global.D = parameters.getDouble("D.value");
+			Global.CLOCKTYPE = parameters.getInt("CLOCKTYPE.value");
 		}catch (Exception e){
 			System.err.println("ERROR: Loading parameters failed");
 		}
@@ -112,6 +113,7 @@ public class Application {
 						System.out.println("    2c) TTL  ");
 						System.out.println("    2d) Churn ");
 						System.out.println("    2e) Process drift ");
+						System.out.println("    2f) Clock type");
 						System.out.println("    b = go back  ");
 
 						inputCommand = input.nextLine();
@@ -162,6 +164,16 @@ public class Application {
 								try{
 									String pd = input.nextLine();
 									Global.D = Double.parseDouble(pd);
+								}
+								catch (Exception e) {
+									System.out.println("ERROR : Try again\n");
+								}
+								break;
+							case "2f":
+								System.out.print("Insert new clock type: " );
+								try{
+									String cT = input.nextLine();
+									Global.CLOCKTYPE = Integer.parseInt(cT);
 								}
 								catch (Exception e) {
 									System.out.println("ERROR : Try again\n");
@@ -274,7 +286,7 @@ public class Application {
 					createNodes(n2);
 
 
-					for (int i = 2; i <= ttl2; i = i + s2){
+					for (int i = 4; i <= ttl2; i = i + s2){
 
 
 						//update

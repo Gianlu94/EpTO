@@ -19,6 +19,8 @@ public class Global {
 	public static double C;         //churn
 	public static double D;         //drift
 
+	public static int CLOCKTYPE;
+
 	public static int runCounter = 0;
 
 	public static ActorRef pss;     //pss

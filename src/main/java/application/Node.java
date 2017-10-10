@@ -21,6 +21,7 @@ public class Node extends UntypedActor {
 	private double churn;
 	private int idMessages; //counter used to assign id to messages
 	private long lastDeliveredTs = 0;
+	private LogicalClock logicalClock;
 
 	private String pathLog;
 
@@ -38,6 +39,10 @@ public class Node extends UntypedActor {
 			k = msg.k;
 			churn = msg.churn;
 
+			//set to logicalClock if the parameter is set
+			if (Global.CLOCKTYPE == 0){
+				logicalClock = new LogicalClock();
+			}
 			//ask Pss its id
 			Global.pss.tell(new Messages.IdRequest(), getSelf());
 
@@ -67,7 +72,14 @@ public class Node extends UntypedActor {
 			Event event = new Event();
 			event.setId(myId+"-"+idMessages); //set message id (node id + message id)
 			idMessages++; //for the next messages
-			event.setTs(GlobalClock.getClock());
+
+			if (Global.CLOCKTYPE == 1){
+				event.setTs(GlobalClock.getClock());
+			}
+			else{
+				event.setTs(logicalClock.getClock());
+			}
+
 			event.setTtl(0);
 			event.setSourceId(myId);
 
@@ -121,6 +133,9 @@ public class Node extends UntypedActor {
 				}
 
 				//UPDATECLOCK
+				if (Global.CLOCKTYPE == 0){
+					logicalClock.updateClock(event.getTs());
+				}
 
 			}
 
@@ -174,7 +189,17 @@ public class Node extends UntypedActor {
 		for (String key : received.keySet()){
 			Event event = received.get(key);
 
-			if (GlobalClock.isDeliverable(event)){
+			boolean isDeliverable;
+
+			if (Global.CLOCKTYPE == 1){
+				isDeliverable = GlobalClock.isDeliverable(event);
+			}
+			else{
+				isDeliverable = logicalClock.isDeliverable(event);
+			}
+
+
+			if (isDeliverable){
 				deliverableEvents.add(event);
 			}
 			else{
