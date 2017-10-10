@@ -121,8 +121,7 @@ public class Application {
 								System.out.print("Insert new n: " );
 								try{
 									String n = input.nextLine();
-									Global.N = Integer.parseInt(n);
-									//Todo:
+									createNodes(Integer.parseInt(n));
 								}
 								catch (Exception e) {
 									System.out.println("ERROR : Try again\n");
