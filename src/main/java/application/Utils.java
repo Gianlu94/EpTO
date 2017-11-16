@@ -17,6 +17,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Random;
 
 /**
  * Created by gianluke on 29/08/17.
@@ -234,5 +235,17 @@ public class Utils {
 	public static void deleteFile (String pathFile){
 		File file = new File (pathFile);
 		file.delete();
+	}
+
+	//function used by a process to retrieve its round duration (extension)
+	public static int getRoundDuration (){
+		Random random = new Random();
+
+		int total = (int)(Global.RD * Global.D);
+		int valueToAdd = random.nextInt(total+1);
+		valueToAdd = valueToAdd - total/2;
+
+		return (Global.RD + valueToAdd);
+
 	}
 }

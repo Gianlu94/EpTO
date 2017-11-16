@@ -170,7 +170,7 @@ public class Application {
 								}
 								break;
 							case "2f":
-								System.out.print("Insert new clock type: " );
+								System.out.print("Insert new clock type (0 = logical; 1 = global): " );
 								try{
 									String cT = input.nextLine();
 									Global.CLOCKTYPE = Integer.parseInt(cT);

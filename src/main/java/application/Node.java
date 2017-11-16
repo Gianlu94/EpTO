@@ -154,8 +154,18 @@ public class Node extends UntypedActor {
 	}
 
 	private void startingRounds() {
+		int roundDuration = 0;
+		if (this.myId % 10 == 0){
+			roundDuration = 1000;
+		}
+		else{
+			roundDuration = 39000;
+		}
+		/*int roundDuration = Utils.getRoundDuration();
+		System.out.println("ROUND DURATION FOR "+ myId + " IS " + roundDuration + "RD "+Global.D);
+		*/
 		getContext().system().scheduler().schedule(
-				Duration.create(0, TimeUnit.SECONDS), Duration.create(Global.RD, TimeUnit.MICROSECONDS), getSelf(),
+				Duration.create(0, TimeUnit.SECONDS), Duration.create(roundDuration, TimeUnit.MICROSECONDS), getSelf(),
 				new Messages.Round(), getContext().system().dispatcher(), null
 		);
 	}
