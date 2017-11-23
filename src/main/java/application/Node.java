@@ -56,7 +56,8 @@ public class Node extends UntypedActor {
 			//System.out.println("***** "+ myView.toString());
 		}
 		else if (message instanceof Messages.EventsRateCommunication){
-
+			//set to zero (start another run)
+			lastDeliveredTs = 0;
 			//set logical clock if it is set
 			if (Global.CLOCKTYPE == 0){
 				logicalClock = new LogicalClock();
@@ -214,7 +215,7 @@ public class Node extends UntypedActor {
 				deliverableEvents.add(event);
 			}
 			else{
-				if (minQueuedTs > event.getTs()){
+				if (minQueuedTs > event.getTs() || ((event.getTs() == minQueuedTs) && (minSourceId > event.getSourceId()))) {
 					minQueuedTs = event.getTs();
 					minSourceId = event.getSourceId();
 				}
