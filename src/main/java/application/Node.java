@@ -39,10 +39,6 @@ public class Node extends UntypedActor {
 			k = msg.k;
 			churn = msg.churn;
 
-			//set to logicalClock if the parameter is set
-			if (Global.CLOCKTYPE == 0){
-				logicalClock = new LogicalClock();
-			}
 			//ask Pss its id
 			Global.pss.tell(new Messages.IdRequest(), getSelf());
 
@@ -60,6 +56,11 @@ public class Node extends UntypedActor {
 			//System.out.println("***** "+ myView.toString());
 		}
 		else if (message instanceof Messages.EventsRateCommunication){
+
+			//set logical clock if it is set
+			if (Global.CLOCKTYPE == 0){
+				logicalClock = new LogicalClock();
+			}
 			Messages.EventsRateCommunication msg = (Messages.EventsRateCommunication)message;
 			//System.out.println ("Node "+ myId + " received spawn order");
 			pathLog = Utils.getPathToLog(myId);
@@ -156,16 +157,16 @@ public class Node extends UntypedActor {
 	private void startingRounds() {
 		int roundDuration = 0;
 		if (this.myId % 10 == 0){
-			roundDuration = 1000;
+			roundDuration = 5000;
 		}
-		else{
-			roundDuration = 39000;
+		else {
+			roundDuration = 35000;
 		}
-		/*int roundDuration = Utils.getRoundDuration();
-		System.out.println("ROUND DURATION FOR "+ myId + " IS " + roundDuration + "RD "+Global.D);
-		*/
+		//int roundDuration = Utils.getRoundDuration();
+		//System.out.println("ROUND DURATION FOR "+ myId + " IS " + roundDuration + "RD "+Global.D);
+
 		getContext().system().scheduler().schedule(
-				Duration.create(0, TimeUnit.SECONDS), Duration.create(roundDuration, TimeUnit.MICROSECONDS), getSelf(),
+				Duration.create(0, TimeUnit.MICROSECONDS), Duration.create(roundDuration, TimeUnit.MICROSECONDS), getSelf(),
 				new Messages.Round(), getContext().system().dispatcher(), null
 		);
 	}
