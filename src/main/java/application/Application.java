@@ -74,10 +74,10 @@ public class Application {
 			System.out.println("\n\n1) How many events to spawn ");
 			System.out.println("2) Change algorithm's parameters ");
 			System.out.println("3) Test_1: Verify Total Order ");
-			System.out.println("4) Test_2: Number of messages lost");
-			System.out.println("    4a) Percentage of msgs lost chart");
-			System.out.println("    4b) Plot on the variation of N ");
-			System.out.println("    4c) Plot on the variation of TTL ");
+			System.out.println("4) Test_2: Compute percentage of messages lost");
+			System.out.println("    4a) Display msgs lost chart");
+			System.out.println("    4b) Plot msg lost chart on the variation of N ");
+			System.out.println("    4c) Plot msg lost chart on the variation of TTL ");
 			//System.out.println("    a) Percentage of messages lost ")
 
 			inputCommand = input.nextLine();

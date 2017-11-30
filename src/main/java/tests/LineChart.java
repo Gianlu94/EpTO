@@ -31,14 +31,14 @@ public class LineChart extends JFrame {
 		chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
 		setContentPane(chartPanel);
 
-		/*
-		saving chart
+
+		//saving chart
 		try {
-			ChartUtilities.saveChartAsPNG(new File("./chart.png"), chart,300,600);
+			ChartUtilities.saveChartAsPNG(new File("./chart"+System.currentTimeMillis()+".png"), chart,300,300);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		*/
+
 
 
 
