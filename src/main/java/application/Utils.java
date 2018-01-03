@@ -113,16 +113,13 @@ public class Utils {
 			for (String item : log){
 				if (!logsGraph.containsVertex(item)) {
 					logsGraph.addVertex(item);
-					System.out.println("\nADDING vertex "+ item);
 					if (pred != null){
 						logsGraph.addEdge(item, pred);
-						System.out.println("\nCREATE edge from "+ item +" to "+ pred);
 					}
 				}
 				else{
 					if ((pred != null) && (!logsGraph.containsEdge(item, pred))){
 						logsGraph.addEdge(item, pred);
-						System.out.println("\nCREATE edge from "+ item +" to "+ pred);
 					}
 				}
 				pred = item;
@@ -135,7 +132,6 @@ public class Utils {
 	//check if the graph has not cycle (= satisfy total order)
 	public static boolean checkTotalOrder(DirectedGraph logsGraph){
 		TarjanSimpleCycles finderCycles = new TarjanSimpleCycles(logsGraph);
-		System.out.println("***** CYCLE"+ finderCycles.findSimpleCycles().toString());
 		return finderCycles.findSimpleCycles().isEmpty();
 	}
 
