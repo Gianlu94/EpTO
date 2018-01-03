@@ -9,7 +9,9 @@ import com.opencsv.CSVWriter;
 import org.jgrapht.DirectedGraph;
 
 /**
- * Created by gianluke on 31/08/17.
+ * Class contains the following test:
+ *  - total order
+ *  - percentage of msg lost for run
  */
 public class Tests {
 
@@ -17,10 +19,8 @@ public class Tests {
 		ArrayList<ArrayList<String>> logs = new ArrayList<ArrayList<String>>();
 		logs = Utils.uploadLogs();
 
-		//System.out.println("***** " + logs.size() + "***** " + logs.get(0).size());
 		DirectedGraph graph = Utils.createLogsGraph(logs);
 		boolean result = Utils.checkTotalOrder(graph);
-		System.out.println("\nRESULT : "+result);
 		return result;
 	}
 
@@ -33,8 +33,6 @@ public class Tests {
 		for (ArrayList<String> log : logs){
 			pLost = pLost + totMessages - log.size();
 		}
-
-		System.out.println("Percentage of msgs lost is " + ((double)pLost)/(totMessages* Global.N));
 
 
 		CSVWriter writerCsv = null;

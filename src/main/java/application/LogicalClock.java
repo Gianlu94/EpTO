@@ -1,7 +1,7 @@
 package application;
 
 /**
- * Created by gianluke on 10/10/17.
+ * Class implements logical clock
  */
 public class LogicalClock {
 	long logicalClock = 0;

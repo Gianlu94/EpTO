@@ -6,7 +6,6 @@ import java.util.Scanner;
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import akka.actor.Props;
-import akka.japi.Util;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import org.jfree.ui.RefineryUtilities;
@@ -14,7 +13,7 @@ import tests.LineChart;
 import tests.Tests;
 
 /**
- * Created by gianluke on 24/08/17.
+ * This is the class managing user-system interaction as well as system initialization
  */
 public class Application {
 
@@ -59,12 +58,12 @@ public class Application {
 	private static void terminal(){
 		Scanner input;
 		String inputCommand;
-		String [] tokensInput;
-		Integer tokensNumber;
-		String firstCommand;
 
 		input = new Scanner(System.in);
+
+		//how many event to spawn
 		int eventsRate = 0;
+		//duration of the spawning
 		int duration = 0;
 
 		Utils.cleanEnvironment();
@@ -78,7 +77,6 @@ public class Application {
 			System.out.println("    4a) Display msgs lost chart");
 			System.out.println("    4b) Plot msg lost chart on the variation of N ");
 			System.out.println("    4c) Plot msg lost chart on the variation of TTL ");
-			//System.out.println("    a) Percentage of messages lost ")
 
 			inputCommand = input.nextLine();
 
@@ -99,13 +97,6 @@ public class Application {
 					}
 					Global.runCounter++; //increment the run
 					break;
-					/*if(Global.deliveredEvents.size() != 0){
-						for (Event event : Global.deliveredEvents){
-
-						}
-					}
-					*/
-					//Global.deliveredEvents.clear();
 				case "2":
 					while (!inputCommand.equals("b")){
 						System.out.println("    2a) Number of nodes  ");
@@ -126,7 +117,7 @@ public class Application {
 									createNodes(Integer.parseInt(n));
 								}
 								catch (Exception e) {
-									System.out.println("ERROR : Try again\n");
+									System.err.println("ERROR : Try again\n");
 								}
 								break;
 							case "2b":
@@ -136,7 +127,7 @@ public class Application {
 									Global.K = Integer.parseInt(k);
 								}
 								catch (Exception e) {
-									System.out.println("ERROR : Try again\n");
+									System.err.println("ERROR : Try again\n");
 								}
 								break;
 							case "2c":
@@ -146,7 +137,7 @@ public class Application {
 									Global.TTL = Integer.parseInt(ttl);
 								}
 								catch (Exception e) {
-									System.out.println("ERROR : Try again\n");
+									System.err.println("ERROR : Try again\n");
 								}
 								break;
 							case "2d":
@@ -156,7 +147,7 @@ public class Application {
 									Global.C = Double.parseDouble(c);
 								}
 								catch (Exception e) {
-									System.out.println("ERROR : Try again\n");
+									System.err.println("ERROR : Try again\n");
 								}
 								break;
 							case "2e":
@@ -166,7 +157,7 @@ public class Application {
 									Global.D = Double.parseDouble(pd);
 								}
 								catch (Exception e) {
-									System.out.println("ERROR : Try again\n");
+									System.err.println("ERROR : Try again\n");
 								}
 								break;
 							case "2f":
@@ -176,7 +167,7 @@ public class Application {
 									Global.CLOCKTYPE = Integer.parseInt(cT);
 								}
 								catch (Exception e) {
-									System.out.println("ERROR : Try again\n");
+									System.err.println("ERROR : Try again\n");
 								}
 								break;
 
@@ -210,8 +201,10 @@ public class Application {
 					lineChart.setVisible(true);
 					break;
 				case "4b":
-					int n;  //nodes to create
-					int s;  //creation step
+					//nodes to create
+					int n;
+					//creation step
+					int s;
 					int ttl;
 					int k;
 
@@ -331,7 +324,7 @@ public class Application {
 
 		Global.pss.tell(new Messages.ShutDownNodes(), null);
 
-		//wait
+		//wait nodes deletion
 		try {
 			Thread.sleep(1000);
 		} catch (InterruptedException e) {

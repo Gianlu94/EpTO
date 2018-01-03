@@ -6,11 +6,12 @@ import java.io.Serializable;
 import java.util.HashMap;
 
 /**
- * Created by gianluke on 24/08/17.
  *
  * This is the class containing the different kinds of messages
- * exchange among nodes
+ * exchanged among nodes
+ *
  */
+
 public class Messages {
 
 	//start pss process
@@ -28,10 +29,10 @@ public class Messages {
 		}
 	}
 
-	//request id to pss from node
+	//request id sent by a node to pss
 	public static class IdRequest implements Serializable{};
 
-	//response id to node from pss
+	//response id sent by pss to the requesting node
 	public static class IdResponse implements  Serializable{
 		int id;
 
@@ -40,7 +41,7 @@ public class Messages {
 		}
 	}
 
-	//request view to pss from node
+	//request view sent by a node to pss
 	public static class RequestView implements Serializable{
 		int sender;
 
@@ -49,7 +50,7 @@ public class Messages {
 		}
 	}
 
-	//response view to node from pss
+	//response view sent by pss to the requesting node
 	public static class ResponseView implements  Serializable{
 		HashMap<Integer, ActorRef> view;
 
@@ -80,7 +81,7 @@ public class Messages {
 		}
 	}
 
-	//message sent to Node in order to create a new event
+	//message sent by pss to a node in order to create a new event
 	public static class CreateEvent implements Serializable{}
 
 
@@ -93,13 +94,11 @@ public class Messages {
 			for (String key : nextBall.keySet()){
 				this.nextball.put(key, new Event(nextBall.get(key)));
 			}
-			//this.nextball = new HashMap<String, Event>(nextBall);
 		}
 	}
 
 
-
-	//message to simulate each round
+	//message used to simulate each round
 	public static class Round implements Serializable{};
 
 	//message sent to pss to shutdown nodes

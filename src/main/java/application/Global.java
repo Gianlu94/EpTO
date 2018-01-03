@@ -5,7 +5,7 @@ import akka.actor.ActorRef;
 import java.util.Vector;
 
 /**
- * Created by gianluke on 25/08/17.
+ * Class containing variables with globa access
  */
 public class Global {
 
@@ -25,10 +25,16 @@ public class Global {
 
 	public static ActorRef pss;     //pss
 
+	//path to the output folder containing runs
 	public static String pathOutPut = "./output/";
+	//path to the i-th run folder
 	public static String pathToRun = pathOutPut + "run-";
+	//path to the i-th node node
 	public static String pathNode = "/Node-";
+
 	public static String pathToCsvRun = pathOutPut + "dataRun.csv";
+	//path to the csv containing data of test with N
 	public static String pathToCsvGroupRunNodes = pathOutPut + "dataGroupRunNodes.csv";
+	//path to the csv containing data of test with TTL
 	public static String pathToCsvGroupRunTTL = pathOutPut + "dataGroupRunTTL.csv";
 }

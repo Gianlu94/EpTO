@@ -18,7 +18,7 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * Created by gianluke on 21/09/17.
+ * Class used for chart creation
  */
 public class LineChart extends JFrame {
 
@@ -34,7 +34,7 @@ public class LineChart extends JFrame {
 
 		//saving chart
 		try {
-			ChartUtilities.saveChartAsPNG(new File("./chart"+System.currentTimeMillis()+".png"), chart,300,300);
+			ChartUtilities.saveChartAsPNG(new File("./chart"+System.currentTimeMillis()+".png"), chart,500,500);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -71,7 +71,6 @@ public class LineChart extends JFrame {
 		Shape boxLegend = new Rectangle(10,10);
 		for (String legendItem : legendToDisplay){
 			chartLegend.add(new LegendItem(legendItem, null, null, null, boxLegend, Color.black));
-			//chartLegend.add(new LegendItem(legendItem, null, null, null, boxLegend, Color.BLACK));
 		}
 
 

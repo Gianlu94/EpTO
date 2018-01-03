@@ -9,16 +9,14 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Created by gianluke on 24/08/17.
  * This is the class that represents a node of the network
  */
+
 public class Node extends UntypedActor {
 
 	private ActorRef pss;
+	//node id
 	private int myId;
-	private int st;
-	private int k;
-	private double churn;
 	private int idMessages; //counter used to assign id to messages
 	private long lastDeliveredTs = 0;
 	private LogicalClock logicalClock;
@@ -36,24 +34,20 @@ public class Node extends UntypedActor {
 		if (message instanceof  Messages.StartingNode){
 			Messages.StartingNode msg = (Messages.StartingNode)message;
 
-			k = msg.k;
-			churn = msg.churn;
-
-			//ask Pss its id
+			//ask pss id
 			Global.pss.tell(new Messages.IdRequest(), getSelf());
 
 		}
 		else if (message instanceof Messages.IdResponse){
 			myId = ((Messages.IdResponse) message).id;
 			
-			//ask Pss starting view
+			//ask to pss starting view
 			Global.pss.tell(new Messages.RequestView(myId), getSelf());
 
 		}
 		else if (message instanceof  Messages.ResponseView){
 			myView = ((Messages.ResponseView)message).view;
 			startingRounds();
-			//System.out.println("***** "+ myView.toString());
 		}
 		else if (message instanceof Messages.EventsRateCommunication){
 			//set to zero (start another run)
@@ -63,7 +57,6 @@ public class Node extends UntypedActor {
 				logicalClock = new LogicalClock();
 			}
 			Messages.EventsRateCommunication msg = (Messages.EventsRateCommunication)message;
-			//System.out.println ("Node "+ myId + " received spawn order");
 			pathLog = Utils.getPathToLog(myId);
 			Utils.createFile(pathLog);
 
@@ -72,13 +65,15 @@ public class Node extends UntypedActor {
 		}
 		else if (message instanceof  Messages.CreateEvent){
 			Event event = new Event();
-			event.setId(myId+"-"+idMessages); //set message id (node id + message id)
-			idMessages++; //for the next messages
+
+			//set message id (node id + message id)
+			event.setId(myId+"-"+idMessages);
+			idMessages++;
 
 			if (Global.CLOCKTYPE == 1){
 				event.setTs(GlobalClock.getClock());
 			}
-			else{
+			else {
 				event.setTs(logicalClock.getClock());
 			}
 
@@ -102,10 +97,9 @@ public class Node extends UntypedActor {
 
 
 			if (nextBall.size() != 0){
-				//get k nodes from my view
+				//get k nodes from view
 				HashMap<Integer,ActorRef> peers;
 				peers = Utils.getRandomNodes(myView,Global.K);
-				//System.out.println("Node "+myId + ":  k = "+ Global.K+ " peersSize = "+ peers.size());
 				for (int q : peers.keySet()){
 					peers.get(q).tell(new Messages.Ball(nextBall),null);
 				}
@@ -125,7 +119,6 @@ public class Node extends UntypedActor {
 				if (event.getTtl() < Global.TTL){
 					if (nextBall.containsKey(event.getId())) {
 						if (nextBall.get(event.getId()).getTtl() < event.getTtl()) {
-							//System.out.println("EVENT BALL KEY = " + event.getId() + "-- EVENT NEXT BALL KEY "+nextBall.get(event.getId()));
 							nextBall.get(event.getId()).setTtl(event.getTtl());
 						}
 					}
@@ -157,14 +150,9 @@ public class Node extends UntypedActor {
 
 	private void startingRounds() {
 		int roundDuration = 0;
-		if (this.myId % 10 == 0){
-			roundDuration = 5000;
-		}
-		else {
-			roundDuration = 35000;
-		}
-		//int roundDuration = Utils.getRoundDuration();
-		//System.out.println("ROUND DURATION FOR "+ myId + " IS " + roundDuration + "RD "+Global.D);
+
+		roundDuration = Utils.getRoundDuration();
+
 
 		getContext().system().scheduler().schedule(
 				Duration.create(0, TimeUnit.MICROSECONDS), Duration.create(roundDuration, TimeUnit.MICROSECONDS), getSelf(),
@@ -237,17 +225,6 @@ public class Node extends UntypedActor {
 			}
 		}
 
-		/*
-		for (int i = 0; i < deliverableEvents.size(); i++){
-			Event event = deliverableEvents.get(i);
-			if (event.getTs() > minQueuedTs){
-				deliverableEvents.remove(i);
-			}
-			else{
-				received.remove(event.getId());
-			}
-		}
-		*/
 
 		ArrayList<Event> deliverableEventsSorted = new ArrayList<Event>(deliverableEvents);
 		Collections.sort(deliverableEventsSorted);
@@ -263,7 +240,6 @@ public class Node extends UntypedActor {
 
 	private void deliver (Event event){
 		Utils.writeOnAFile(pathLog,event.getId());
-		//System.out.println("Node "+ myId + "delivered " + event.getId() );
 	}
 
 

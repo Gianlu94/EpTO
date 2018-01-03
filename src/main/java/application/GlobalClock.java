@@ -1,7 +1,7 @@
 package application;
 
 /**
- * Created by gianluke on 25/08/17.
+ * Class implements global clock
  */
 public class GlobalClock {
 
@@ -10,7 +10,6 @@ public class GlobalClock {
 	}
 
 	public static long getClock(){
-		//return System.currentTimeMillis();
 		return System.nanoTime();
 	}
 }

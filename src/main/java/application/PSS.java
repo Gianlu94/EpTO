@@ -10,20 +10,21 @@ import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Created by gianluke on 24/08/17.
+ * Pss class
  *
  */
 
 public class PSS extends UntypedActor {
 
 
+	//incrementing nodes id
 	private int ids = 0;
+	//keeps tracking of nodes
 	private HashMap<Integer,ActorRef> nodes;
 
 	public void onReceive (Object message) throws Exception{
 
 		if (message instanceof Messages.StartingPss){
-
 			nodes = new HashMap<Integer, ActorRef>();
 		}
 		else if (message instanceof  Messages.IdRequest){
@@ -36,11 +37,10 @@ public class PSS extends UntypedActor {
 			if ((nodes.size() - 1) >= Global.SV){
 				Messages.RequestView msg = (Messages.RequestView) message;
 				HashMap<Integer,ActorRef> sendingview = createView(msg.sender);
-				//System.out.println("*******ID sendert")
-				//System.out.println("***** "+ myView.toString());
 				getSender().tell(new Messages.ResponseView(sendingview), null);
 			}
 			else{
+				//if not having SV nodes then check later again
 				getContext().system().scheduler().scheduleOnce(
 						Duration.create(400, TimeUnit.MILLISECONDS), getSelf(),
 						message, getContext().system().dispatcher(), getSender()

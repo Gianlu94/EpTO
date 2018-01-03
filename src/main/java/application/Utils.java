@@ -20,18 +20,16 @@ import java.util.HashMap;
 import java.util.Random;
 
 /**
- * Created by gianluke on 29/08/17.
+ * Class that contains some useful method
  */
 public class Utils {
 
 	//This method is responsible to select k node from a given node map
-	//TODO: to implement checks on parameters (k <= nodeView)
 	public static HashMap<Integer, ActorRef> getRandomNodes(HashMap<Integer,ActorRef> nodeView, int k){
 		ArrayList<Integer> keyNodes = new ArrayList<Integer>(nodeView.keySet());
 		Collections.shuffle(keyNodes);
 
 		HashMap<Integer,ActorRef> selectedRandomNodes = new HashMap<Integer, ActorRef>();
-		//System.out.println("size of view : "+nodeView.size()+ " -- K: "+k );
 
 		for (int i = 0; i < k; i++) {
 			int key = keyNodes.get(i);
@@ -57,7 +55,7 @@ public class Utils {
 		}
 	}
 
-	//Wrapper to write into a file
+	//wrapper to write into a file
 	public static void writeOnAFile (String file, String content){
 		PrintWriter out = null;
 		try{
@@ -69,8 +67,8 @@ public class Utils {
 			out.flush();
 		}
 		catch (IOException e){
-			//System.err.println("ERROR : An error occured while writing into file " + file);
-			e.printStackTrace();
+			System.err.println("ERROR : An error occured while writing into file " + file);
+
 		}
 		finally {
 			out.close();
@@ -78,7 +76,7 @@ public class Utils {
 
 	}
 
-	//Method used to load all logs
+	//method used to load all logs
 	public static ArrayList<ArrayList<String>> uploadLogs (){
 
 		String pathToRun = Global.pathToRun+(Global.runCounter - 1)+"/";
@@ -122,7 +120,6 @@ public class Utils {
 					}
 				}
 				else{
-					//System.out.println("ITEM : "+ item + " PRED  " + pred);
 					if ((pred != null) && (!logsGraph.containsEdge(item, pred))){
 						logsGraph.addEdge(item, pred);
 						System.out.println("\nCREATE edge from "+ item +" to "+ pred);

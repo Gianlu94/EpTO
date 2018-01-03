@@ -1,7 +1,7 @@
 package application;
 
 /**
- * Created by gianluke on 25/08/17.
+ * Event class
  */
 public class Event  implements Comparable<Event>{
 	private String id;
