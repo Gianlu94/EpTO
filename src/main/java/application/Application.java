@@ -39,8 +39,9 @@ public class Application {
 		}catch (Exception e){
 			System.err.println("ERROR: Loading parameters failed");
 		}
-
-		system = ActorSystem.create("mysystem");
+		File logConfigurationFile = new File("./src/main/resources/application.conf");
+	    Config logConfig = ConfigFactory.parseFile(logConfigurationFile);
+	    system = ActorSystem.create("mysystem", logConfig);
 		//create PSS process
 		Global.pss = system.actorOf(Props.create(PSS.class), "PSS");
 		Global.pss.tell(new Messages.StartingPss(), null);
