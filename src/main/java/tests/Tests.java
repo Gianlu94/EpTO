@@ -38,11 +38,13 @@ public class Tests {
 		CSVWriter writerCsv = null;
 		if (typeOfRun == 0){ //single Run
 			writerCsv = Utils.openCsv(Global.pathToCsvRun);
+			double percentageLostMsg = (double)pLost/(double)(totMessages* Global.N);
+			System.out.print("Percentage of lost messages: " + percentageLostMsg);
 		}
-		else if (typeOfRun == 1) { //groupRun
+		else if (typeOfRun == 1) { //groupRun on variation of N
 			writerCsv = Utils.openCsv(Global.pathToCsvGroupRunNodes);
 		}
-		else{
+		else{ //groupRun on variation of TTL
 			writerCsv = Utils.openCsv(Global.pathToCsvGroupRunTTL);
 		}
 

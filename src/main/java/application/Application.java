@@ -70,13 +70,13 @@ public class Application {
 
 
 		while (true){
-			System.out.println("\n\n1) How many events to spawn ");
+			System.out.println("\n\n1) Simulate a single run of the algorithm ");
 			System.out.println("2) Change algorithm's parameters ");
-			System.out.println("3) Test_1: Verify Total Order ");
-			System.out.println("4) Test_2: Compute percentage of messages lost");
-			System.out.println("    4a) Display msgs lost chart");
-			System.out.println("    4b) Plot msg lost chart on the variation of N ");
-			System.out.println("    4c) Plot msg lost chart on the variation of TTL ");
+			System.out.println("3) Test_1: Verify Total Order of the last run ");
+			System.out.println("4) Test_2: Compute percentage of messages lost in the last run ");
+			System.out.println("    4a) Display msgs lost chart of the single runs on the variation of N" );
+			System.out.println("    4b) Simulate a series of runs varying N and plot msg lost chart ");
+			System.out.println("    4c) Simulate a series of runs varying TTL and plot msg lost chart ");
 
 			inputCommand = input.nextLine();
 
@@ -87,6 +87,7 @@ public class Application {
 					System.out.print(" Option 1 ---- Insert duration of the spawn: ");
 					duration = Integer.parseInt(input.nextLine());
 					Global.pss.tell(new Messages.StartingSpawnEvents(eventsRate,duration), null);
+					//wait for the run to finish
 					try {
 						for (int i = 0; i < (duration + 1); i++ ){
 							System.out.print(". ");
@@ -232,7 +233,7 @@ public class Application {
 
 						Global.pss.tell(new Messages.StartingSpawnEvents(eventsRate,duration), null);
 
-						//wait
+						//wait for the run to finish
 						try {
 							Thread.sleep((duration + 1)*1000);
 						} catch (InterruptedException e) {
@@ -288,7 +289,7 @@ public class Application {
 
 						Global.pss.tell(new Messages.StartingSpawnEvents(eventsRate,duration), null);
 
-						//wait
+						//wait for the run to finish
 						try {
 							Thread.sleep((duration + 1)*1000);
 						} catch (InterruptedException e) {
@@ -337,7 +338,7 @@ public class Application {
 			node.tell(new Messages.StartingNode(i, Global.C), null);
 		}
 
-		//wait
+		//wait for nodes creation
 		try {
 			Thread.sleep(1000);
 		} catch (InterruptedException e) {
